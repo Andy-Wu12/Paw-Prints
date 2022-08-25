@@ -7,10 +7,11 @@ const app = new Koa();
 const router = new Router();
 const port = 3011;
 
+
 app.use(cors({origin: '*'}));
 
 router.get('/', (ctx) => {
-	ctx.body = 'hello!\n' + 'test append';
+	ctx.body = 'hello!';
 });
 
 app.use(async (ctx, next) => {
