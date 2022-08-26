@@ -14,6 +14,24 @@ router.get('/', (ctx) => {
 	ctx.body = 'hello!';
 });
 
+// Set up proxy route to fetch from dog api
+router.get('/dog/get-random', async (ctx) => {
+	const queryData = await fetch('https://dog.ceo/api/breeds/image/random')
+		.then(function(response) {
+			if(response.status >= 400) {
+				throw new Error("Bad response from server");
+			}
+			return response.json();
+		})
+		.then(function(data) {
+			// console.log(data);
+			return data;
+		});
+	
+	ctx.body = queryData;
+
+});
+
 app.use(async (ctx, next) => {
 	await next();
 	const rt = ctx.response.get('X-Response-Time');
