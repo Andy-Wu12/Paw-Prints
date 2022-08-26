@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 
+import './styles/style.css';
+
 function App() {
   return (
     <div className="App">
@@ -38,7 +40,7 @@ function RandomDogImage() {
     <div>
       <h1> Random Dog Image </h1>
       <p> See a new photo every time you reload the page! </p>
-      <img src={imageLink} />
+      <img className='dog-image' src={imageLink} />
     </div>
   );
 }
@@ -46,7 +48,7 @@ function RandomDogImage() {
 function ImageList(props) {
   const imageLinks = props.images
   const imageList = imageLinks.map((link) =>
-    <img src={link} />
+    <img className='dog-image' src={link} />
   );
 
   return (
