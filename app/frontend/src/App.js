@@ -18,14 +18,15 @@ function App() {
 
 function DogQueryForm() {
   const [imageLinks, setImageLinks] = useState([]);
-
+  // Config number of images to pull from API
+  const imageCount = 25;
+  
   function handleSubmit(e) {
     e.preventDefault();
     const breed = e.target.breed.value.trim();
-    console.log(e);
-    
+
     if(breed !== undefined && breed.length > 0) {
-      fetch(`http://localhost:3011/dog/${breed}/get-images`)
+      fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
       .then(data => setImageLinks(data['message']));
     }
@@ -40,7 +41,7 @@ function DogQueryForm() {
         <button type="submit">Fetch</button>
       </form>
       <br/>
-      <ImageList images={imageLinks} />
+      <ImageList images={imageLinks} desiredLength={imageCount} />
 
     </div>
   );
@@ -71,6 +72,11 @@ function ImageList(props) {
   const imageList = imageLinks.map((link, i) =>
     <img key={`image${i}`} className='dog-image' src={link} alt='Dog' />
   );
+
+  let renderList = []
+  for(let i = 0; i < props.desiredLength; i++) {
+
+  }
 
   return (
     <div className='dog-images'>
