@@ -14,7 +14,7 @@ router.get('/', (ctx) => {
 	ctx.body = 'hello!';
 });
 
-// Set up route to fetch from dog's random endpoint
+// Route to fetch from dog's random endpoint
 router.get('/dog/get-random', async (ctx) => {
 	const queryData = await fetch('https://dog.ceo/api/breeds/image/random')
 		.then(function(response) {
@@ -27,13 +27,31 @@ router.get('/dog/get-random', async (ctx) => {
 			// console.log(data);
 			return data;
 		})
-		.catch(error => {throw error});
+		.catch(error => {throw new Error(error)});
 	
 	ctx.body = queryData;
 
 });
 
-// Set up route to fetch all images of breed (including sub-breeds)
+// Fetch all breed names
+router.get('/breeds', async (ctx) => {
+	const url = 'https://dog.ceo/api/breeds/list/all';
+	const breedData = await fetch(url)
+		.then(function(response) {
+			if(!response.ok) {
+				throw new Error("Bad response from server");
+			}
+			return response.json();
+		})
+		.then(function(data) {
+			return data;
+		})
+		.catch(error => {throw new Error(error)});
+	
+	ctx.body = breedData;
+});
+
+// Route to fetch all images of breed (including sub-breeds)
 router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
