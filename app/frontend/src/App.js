@@ -22,10 +22,12 @@ function DogQueryForm() {
   // Config number of images to pull from API
   const imageCount = 25;
   
+  let breedOptions = breedOptionsToHTML();
+
   function handleSubmit(e) {
     e.preventDefault();
     setPosted(true);
-    const breed = e.target.breed.value.trim().toLowerCase();
+    const breed = e.target.breeds.value.trim().toLowerCase();
 
 
     if(breed !== undefined && breed.length > 0) {
@@ -38,31 +40,34 @@ function DogQueryForm() {
     }
   }
 
-    let imageSectionHTML = <p> Enter a name and click 'Fetch' to get started! </p>;
-    if(posted) {
-      if(imageLinks.length > 0) {
-        imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
-      }
-      else {
-        imageSectionHTML = <p> Invalid breed name! </p>;
-      }
+  let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
+  if(posted) {
+    if(imageLinks.length > 0) {
+      imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
     }
+    else {
+      imageSectionHTML = <p> Invalid breed name! </p>;
+    }
+  }
 
-    return (
-      <div className='query-form'>
-        <h1>Lots of dogs! 🐕</h1>
-        <p>See {imageCount} random photos of your favorite dogs</p>
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="breed" placeholder="Enter a dog breed"/>
-          <button type="submit">Fetch</button>
-        </form>
-        <br/>
-        {imageSectionHTML}
-      </div>
-    );
+  return (
+    <div className='query-form'>
+      <h1>Lots of dogs! 🐕</h1>
+      <p>See {imageCount} random photos of your favorite dogs</p>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="breeds"> Select a breed: </label>
+        <select name="breeds" id="breeds">
+          {console.log(breedOptions)}
+        </select>
+        <button type="submit">Fetch</button>
+      </form>
+      <br/>
+      {imageSectionHTML}
+    </div>
+  );
 }
 
-
+// Get random dog image
 function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
 
@@ -115,9 +120,33 @@ function getRandomIntInRange(rangeEnd) {
   return Math.floor(Math.random() * rangeEnd);
 }
 
-function getRandomArrayValue(array) {
-  const randIdx = getRandomIntInRange(array.length);
-  return array[randIdx];
+function breedOptionsToHTML() {
+  let options = [];
+
+  const url = 'http://localhost:3011/breeds';
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    // ES6 - valid syntax
+    for(const [key, value] of Object.entries(data['message'])) {
+      const breed = key;
+      const subBreeds = value;
+      
+      for(const subBreed of subBreeds) {
+        const breedStr = `${subBreed} ${breed}`;
+        const optionHTML = <option value={breedStr}> {breedStr} </option>;
+        console.log(optionHTML.props);
+        options.push(optionHTML.props);
+      }
+
+    }
+  })
+  .catch(error => {
+    options = [];
+  });
+
+  return options;
+
 }
 
 export default App;

@@ -10,11 +10,11 @@ const port = 3011;
 
 app.use(cors({origin: '*'}));
 
-router.get('/', (ctx) => {
-	ctx.body = 'hello!';
-});
+// router.get('/', (ctx) => {
+// 	ctx.body = 'hello!';
+// });
 
-// Route to fetch from dog's random endpoint
+// Route to fetch from Dog API's 'random' endpoint
 router.get('/dog/get-random', async (ctx) => {
 	const queryData = await fetch('https://dog.ceo/api/breeds/image/random')
 		.then(function(response) {
@@ -25,6 +25,28 @@ router.get('/dog/get-random', async (ctx) => {
 		})
 		.then(function(data) {
 			// console.log(data);
+			return data;
+		})
+		.catch(error => {throw new Error(error)});
+	
+	ctx.body = queryData;
+
+});
+
+// Route to fetch all images of breed (including sub-breeds)
+router.get('/dog/:breed/get-images/:amount', async (ctx) => {
+	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
+	const breed = ctx.params['breed'];
+	const imageCount = ctx.params['amount'];
+	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
+	const queryData = await fetch(url)
+		.then(function(response) {
+			if(!response.ok) {
+				throw new Error("Bad response from server");
+			}
+			return response.json();
+		})
+		.then(function(data) {
 			return data;
 		})
 		.catch(error => {throw new Error(error)});
@@ -49,28 +71,6 @@ router.get('/breeds', async (ctx) => {
 		.catch(error => {throw new Error(error)});
 	
 	ctx.body = breedData;
-});
-
-// Route to fetch all images of breed (including sub-breeds)
-router.get('/dog/:breed/get-images/:amount', async (ctx) => {
-	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
-	const breed = ctx.params['breed'];
-	const imageCount = ctx.params['amount'];
-	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
-	const queryData = await fetch(url)
-		.then(function(response) {
-			if(!response.ok) {
-				throw new Error("Bad response from server");
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			return data;
-		})
-		.catch(error => {throw new Error(error)});
-	
-	ctx.body = queryData;
-
 });
 
 app.use(async (ctx, next) => {
