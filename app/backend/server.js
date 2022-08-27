@@ -34,12 +34,12 @@ router.get('/dog/get-random', async (ctx) => {
 });
 
 // Route to fetch random images of specific sub-breed
-router.get('/dog/:subBreed/:breed/get-images/:amount', async (ctx) => {
+router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
 	const subBreed = ctx.params['subBreed'];
 	const imageCount = ctx.params['amount'];
-	const url = `https://dog.ceo/api/breed/${subBreed}/${breed}/images/random/${imageCount}`;
+	const url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${imageCount}`;
 	const queryData = await fetch(url)
 		.then(function(response) {
 			if(!response.ok) {

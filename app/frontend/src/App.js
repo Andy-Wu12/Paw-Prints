@@ -92,7 +92,6 @@ function DogQueryForm({queryOptions}) {
   );
 }
 
-// Get random dog image
 function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
 
