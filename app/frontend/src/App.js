@@ -4,25 +4,50 @@ import React, { useEffect, useState } from 'react';
 import './styles/style.css';
 
 function App() {
+
   return (
     <div className="App">
       <section id='QueryBreedSection'>
-        <DogQueryForm />
+        <DataFetcher url='http://localhost:3011/breeds' 
+        ComponentToRender={DogQueryForm} />
       </section>
-      <section id='RandomImage'>
-        {/* <RandomDogImage /> */}
-      </section>
+      {/* <section id='RandomImage'>
+        <RandomDogImage />
+      </section> */}
     </div>
   );
 }
 
-function DogQueryForm() {
+
+// Used as parent of components that need to render data after fetching
+// but difficult to manage own state or need to render using fetched data
+// 
+// Since fetch is async, guaranteeing data received before render function is
+// called is impossible in the same function, 
+// so this component handles state of said data and
+// conditionally renders 'ComponentToRender' only when that data is received.
+function DataFetcher({url, ComponentToRender}) {
+  const [data, setData] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(url);
+      const json = await response.json();
+      setData(json);
+    }
+    fetchData();
+  }, []);
+
+  return data && <ComponentToRender queryOptions={data} />
+}
+
+function DogQueryForm({queryOptions}) {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
+
+  const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
   const imageCount = 25;
   
-  let breedOptions = breedOptionsToHTML();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -57,7 +82,7 @@ function DogQueryForm() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="breeds"> Select a breed: </label>
         <select name="breeds" id="breeds">
-          {console.log(breedOptions)}
+          {breedOptions}
         </select>
         <button type="submit">Fetch</button>
       </form>
@@ -105,9 +130,12 @@ function ImageList(props) {
 
     const imgSrc = props.images[imageIndex];
     const img = <img key={`image${i}`} className='dog-image' src={imgSrc} alt='Dog' />;
+    // console.log(img);
     imageList.push(img);
 
   }
+
+  console.log(imageList);
   return (
     <div className='dog-images'>
       {imageList}
@@ -120,31 +148,34 @@ function getRandomIntInRange(rangeEnd) {
   return Math.floor(Math.random() * rangeEnd);
 }
 
-function breedOptionsToHTML() {
+// Convert select-option data into HTML
+function queryOptionsToHTML(data) {
   let options = [];
 
-  const url = 'http://localhost:3011/breeds';
-  fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    // ES6 - valid syntax
-    for(const [key, value] of Object.entries(data['message'])) {
-      const breed = key;
-      const subBreeds = value;
-      
-      for(const subBreed of subBreeds) {
+  // ES6 - valid syntax
+  for(const [key, value] of Object.entries(data['message'])) {
+    const breed = key;
+    const subBreeds = value;
+    
+    if(subBreeds.length > 0) {
+      for(let i = 0; i < subBreeds.length; i++) {
+        const subBreed = subBreeds[i];
         const breedStr = `${subBreed} ${breed}`;
-        const optionHTML = <option value={breedStr}> {breedStr} </option>;
-        console.log(optionHTML.props);
-        options.push(optionHTML.props);
+        const breedValue = `${breed}/${subBreed}`;
+        const optionHTML = <option key={`${breed}option${i}`} value={breedValue}> {breedStr} </option>;
+        // console.log(optionHTML);
+        options.push(optionHTML);
       }
-
     }
-  })
-  .catch(error => {
-    options = [];
-  });
+    else {
+      const breedStr = breed;
+      const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
+      // console.log(optionHTML);
+      options.push(optionHTML);
+    }
 
+  }
+  // console.log(options);
   return options;
 
 }
