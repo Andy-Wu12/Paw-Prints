@@ -26,7 +26,8 @@ router.get('/dog/get-random', async (ctx) => {
 		.then(function(data) {
 			// console.log(data);
 			return data;
-		});
+		})
+		.catch(error => error);
 	
 	ctx.body = queryData;
 
@@ -46,9 +47,9 @@ router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 			return response.json();
 		})
 		.then(function(data) {
-			// console.log(data);
 			return data;
-		});
+		})
+		.catch(error => {});
 	
 	ctx.body = queryData;
 

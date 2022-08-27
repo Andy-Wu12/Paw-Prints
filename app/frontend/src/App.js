@@ -21,6 +21,7 @@ function DogQueryForm() {
   // Config number of images to pull from API
   const imageCount = 25;
   
+
   function handleSubmit(e) {
     e.preventDefault();
     const breed = e.target.breed.value.trim();
@@ -28,23 +29,25 @@ function DogQueryForm() {
     if(breed !== undefined && breed.length > 0) {
       fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
-      .then(data => setImageLinks(data['message']));
+      .then(data => setImageLinks(data['message']))
+      .catch(error => setImageLinks([]));
     }
   }
 
-  return (
-    <div className='query-form'>
-      <h1>Lots of dogs! 🐕</h1>
-      <p>See photos of your favorite dogs</p>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="breed" placeholder="Enter a dog breed"/>
-        <button type="submit">Fetch</button>
-      </form>
-      <br/>
-      <ImageList images={imageLinks} desiredLength={imageCount} />
+    return (
+      <div className='query-form'>
+        <h1>Lots of dogs! 🐕</h1>
+        <p>See photos of your favorite dogs</p>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="breed" placeholder="Enter a dog breed"/>
+          <button type="submit">Fetch</button>
+        </form>
+        <br/>
+        {imageLinks === undefined && <p> Invalid breed name! </p>}
+        {imageLinks.length > 0 && <ImageList images={imageLinks} desiredLength={imageCount} />}
 
-    </div>
-  );
+      </div>
+    );
 }
 
 
@@ -68,21 +71,35 @@ function RandomDogImage() {
 }
 
 function ImageList(props) {
-  const imageLinks = props.images;
-  const imageList = imageLinks.map((link, i) =>
-    <img key={`image${i}`} className='dog-image' src={link} alt='Dog' />
-  );
+  const srcListLength = props.images.length;
+  const renderLength = Math.min(props.desiredLength, srcListLength);
+  const imageList = [];
 
-  let renderList = []
-  for(let i = 0; i < props.desiredLength; i++) {
+  // Track chosen indices to prevent duplicate images from being picked
+  const chosenIdx = {}; 
+
+  for(let i = 0; i < renderLength; i++) {
+    let randomIndex = getRandomIntInRange(srcListLength);
+    while(randomIndex in chosenIdx) {
+      randomIndex = getRandomIntInRange(srcListLength);
+    }
+    chosenIdx[randomIndex] = 0;
+
+    const imgSrc = props.images[randomIndex];
+    const img = <img key={`image${i}`} className='dog-image' src={imgSrc} alt='Dog' />;
+    imageList.push(img);
 
   }
-
   return (
     <div className='dog-images'>
       {imageList}
     </div>
   );
+}
+
+
+function getRandomIntInRange(rangeEnd) {
+  return Math.floor(Math.random() * rangeEnd);
 }
 
 export default App;
