@@ -27,7 +27,7 @@ router.get('/dog/get-random', async (ctx) => {
 			// console.log(data);
 			return data;
 		})
-		.catch(error => error);
+		.catch(error => {throw error});
 	
 	ctx.body = queryData;
 
@@ -41,7 +41,7 @@ router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
 	const queryData = await fetch(url)
 		.then(function(response) {
-			if(response.status >= 400) {
+			if(!response.ok) {
 				throw new Error("Bad response from server");
 			}
 			return response.json();
@@ -49,7 +49,7 @@ router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 		.then(function(data) {
 			return data;
 		})
-		.catch(error => {});
+		.catch(error => {throw new Error(error)});
 	
 	ctx.body = queryData;
 

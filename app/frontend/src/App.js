@@ -17,35 +17,47 @@ function App() {
 }
 
 function DogQueryForm() {
+  const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
   // Config number of images to pull from API
   const imageCount = 25;
   
-
   function handleSubmit(e) {
     e.preventDefault();
-    const breed = e.target.breed.value.trim();
+    setPosted(true);
+    const breed = e.target.breed.value.trim().toLowerCase();
+
 
     if(breed !== undefined && breed.length > 0) {
       fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
       .then(data => setImageLinks(data['message']))
-      .catch(error => setImageLinks([]));
+      .catch(error => {
+        setImageLinks([]);
+      });
     }
   }
+
+    let imageSectionHTML = <p> Enter a name and click 'Fetch' to get started! </p>;
+    if(posted) {
+      if(imageLinks.length > 0) {
+        imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
+      }
+      else {
+        imageSectionHTML = <p> Invalid breed name! </p>;
+      }
+    }
 
     return (
       <div className='query-form'>
         <h1>Lots of dogs! 🐕</h1>
-        <p>See photos of your favorite dogs</p>
+        <p>See {imageCount} random photos of your favorite dogs</p>
         <form onSubmit={handleSubmit}>
           <input type="text" name="breed" placeholder="Enter a dog breed"/>
           <button type="submit">Fetch</button>
         </form>
         <br/>
-        {imageLinks === undefined && <p> Invalid breed name! </p>}
-        {imageLinks.length > 0 && <ImageList images={imageLinks} desiredLength={imageCount} />}
-
+        {imageSectionHTML}
       </div>
     );
 }
