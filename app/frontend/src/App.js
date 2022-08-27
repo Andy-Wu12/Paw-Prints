@@ -76,16 +76,17 @@ function ImageList(props) {
   const imageList = [];
 
   // Track chosen indices to prevent duplicate images from being picked
-  const chosenIdx = {}; 
+  const availableIdx = [...Array(srcListLength).keys()]; 
 
   for(let i = 0; i < renderLength; i++) {
-    let randomIndex = getRandomIntInRange(srcListLength);
-    while(randomIndex in chosenIdx) {
-      randomIndex = getRandomIntInRange(srcListLength);
-    }
-    chosenIdx[randomIndex] = 0;
+    const randomIndex = getRandomIntInRange(availableIdx.length);
+    const imageIndex = availableIdx[randomIndex];
 
-    const imgSrc = props.images[randomIndex];
+    // Swap last element with chosen element and pop to prevent duplicate copies
+    availableIdx[randomIndex] = availableIdx[availableIdx.length - 1]
+    availableIdx.pop();
+
+    const imgSrc = props.images[imageIndex];
     const img = <img key={`image${i}`} className='dog-image' src={imgSrc} alt='Dog' />;
     imageList.push(img);
 
@@ -97,9 +98,14 @@ function ImageList(props) {
   );
 }
 
-
+// Helper
 function getRandomIntInRange(rangeEnd) {
   return Math.floor(Math.random() * rangeEnd);
+}
+
+function getRandomArrayValue(array) {
+  const randIdx = getRandomIntInRange(array.length);
+  return array[randIdx];
 }
 
 export default App;
