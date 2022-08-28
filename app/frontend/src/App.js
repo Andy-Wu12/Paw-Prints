@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
@@ -23,7 +22,7 @@ function App() {
         </section> */}
       </Routes>
       <div className="navbar">
-        <a href='/'> Homepage </a>
+        <a href='/' className='home'> Home </a>
         <a href='/getBreed'> Search Breeds </a>
         <a href='/getRandom'> Random Dogs </a>
       </div>
@@ -34,7 +33,7 @@ function App() {
 
 function Home() {
   return (
-    <h1> Welcome! Click on one of the links below to get started. </h1>
+    <h1> Welcome! Click one of the buttons below to get started. </h1>
   );
 }
 
@@ -69,7 +68,6 @@ function DataFetcher({url, ComponentToRender}) {
 }
 
 function DogQueryForm({queryOptions}) {
-  const [breed, setBreed] = useState('');
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
 
@@ -77,23 +75,19 @@ function DogQueryForm({queryOptions}) {
   // Config number of images to pull from API
   const imageCount = 25;
   
-  useEffect(() => {
+  function handleSubmit(e) {
+    e.preventDefault();
+    setPosted(true);
+    const breed = e.target.breeds.value.trim().toLowerCase();
+
     if(breed !== undefined && breed.length > 0) {
       fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
       .then(data => setImageLinks(data['message']))
       .catch(error => {
         setImageLinks([]);
-      });
+      })
     }
-    
-  }, [breed]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    setPosted(true);
-    setBreed(e.target.breeds.value.trim().toLowerCase());
   }
 
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
@@ -148,7 +142,7 @@ function RandomDogImage() {
   return (
     <div className='random-image-container'>
       <h1> Random Dog Image </h1>
-      <p> See a new photo every time you reload the page! </p>
+      <p> See a random dog photo every time you reload the page! </p>
       <img className='dog-image' src={imageLink} alt='Dog' />
     </div>
   );
