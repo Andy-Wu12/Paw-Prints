@@ -131,7 +131,6 @@ function QueryBreedSection() {
 
 function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
-  const [fetching, setFetching] = useState(false);
 
   function fetchImage() {
     fetch('http://localhost:3011/dog/get-random')
@@ -143,7 +142,7 @@ function RandomDogImage() {
     <div className='random-image-container'>
       <h1> Random Dog Image </h1>
       <p> <button className='fetch' onClick={fetchImage}>Fetch</button> a new image </p>
-      <img className='dog-image' src={imageLink} alt='Dog' />
+      {imageLink && <img className='dog-image' src={imageLink} alt='Dog' />}
     </div>
   );
 }
