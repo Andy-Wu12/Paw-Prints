@@ -1,25 +1,42 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import './styles/style.css';
+import './styles/layout.css';
+import {getRandomIntInRange, queryOptionsToHTML} from './util.js';
 
 function App() {
 
   return (
     <div className="App">
-      {/* React fires useEffect() twice, which causes NS_BINDING_ABORTED error 
-      in Firefox for every image rendered on first fetch after page load */}
-      <section id='QueryBreedSection'>
-        <DataFetcher url='http://localhost:3011/breeds' 
-        ComponentToRender={DogQueryForm} />
-      </section>
-      {/* <section id='RandomImage'>
-        <RandomDogImage />
-      </section> */}
+      <Routes>
+        {/* NS_BINDING_ABORTED error occurs for every image 
+        received in first fetch after every page (re)load
+        The same images then load successfully immediately afterward.
+        NOTE: Error seems to only be occurring on Firefox */}
+        <Route path="/" element={<Home />} />
+        <Route path="/getBreed" element={<QueryBreedSection />} />
+        <Route path="/getRandom" element={<RandomDogImage />} />
+        {/* <section id='RandomImage'>
+          <RandomDogImage />
+        </section> */}
+      </Routes>
+      <div className="navbar">
+        <a href='/'> Homepage </a>
+        <a href='/getBreed'> Search Breeds </a>
+        <a href='/getRandom'> Random Dogs </a>
+      </div>
+      <br/><br/>
     </div>
   );
 }
 
+function Home() {
+  return (
+    <h1> Welcome! Click on one of the links below to get started. </h1>
+  );
+}
 
 // Used as parent of components that need to render data after fetching
 // but difficult to manage own state or need to render using fetched data
@@ -61,7 +78,6 @@ function DogQueryForm({queryOptions}) {
   const imageCount = 25;
   
   useEffect(() => {
-    let ignore = false;
     if(breed !== undefined && breed.length > 0) {
       fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
@@ -75,6 +91,7 @@ function DogQueryForm({queryOptions}) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
     setPosted(true);
     setBreed(e.target.breeds.value.trim().toLowerCase());
   }
@@ -105,6 +122,18 @@ function DogQueryForm({queryOptions}) {
     </div>
   );
 }
+
+function QueryBreedSection() {
+  return (
+  <>
+    <section id='QueryBreedSection'>
+      <DataFetcher url='http://localhost:3011/breeds' 
+      ComponentToRender={DogQueryForm} />
+    </section>
+  </>
+  );
+}
+
 
 function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
@@ -143,53 +172,16 @@ function ImageList(props) {
 
     const imgSrc = props.images[imageIndex];
     const img = <img key={`image${i}`} className='dog-image' src={imgSrc} alt='Dog' />;
-    // console.log(img);
     imageList.push(img);
 
   }
 
-  console.log(imageList);
+  // console.log(imageList);
   return (
     <div className='dog-images'>
       {imageList}
     </div>
   );
-}
-
-// Helper
-function getRandomIntInRange(rangeEnd) {
-  return Math.floor(Math.random() * rangeEnd);
-}
-
-// Convert select-option data into HTML
-function queryOptionsToHTML(data) {
-  let options = [];
-
-  // ES6 - valid syntax
-  for(const [key, value] of Object.entries(data['message'])) {
-    const breed = key;
-    const subBreeds = value;
-    
-    if(subBreeds.length > 0) {
-      for(let i = 0; i < subBreeds.length; i++) {
-        const subBreed = subBreeds[i];
-        const breedStr = `${subBreed} ${breed}`;
-        const breedValue = `${breed}/${subBreed}`;
-        const optionHTML = <option key={`${breed}option${i}`} value={breedValue}> {breedStr} </option>;
-        // console.log(optionHTML);
-        options.push(optionHTML);
-      }
-    }
-    else {
-      const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
-      // console.log(optionHTML);
-      options.push(optionHTML);
-    }
-
-  }
-  // console.log(options);
-  return options;
-
 }
 
 export default App;
