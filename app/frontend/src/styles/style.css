@@ -7,7 +7,6 @@ body {
 .dog-image {
     width: 75%;
     height: 75%;
-    
 }
 
 .navbar a:hover {
@@ -18,4 +17,19 @@ body {
 .navbar a.home {
     background-color: green;
     color: white; 
+}
+
+button.fetch {
+    border: none;
+    border-radius: 30%;
+    font-size: large;
+    font-weight: bolder;
+    background-color: darkgreen;
+    color: white;
+    width: 100px;
+    height: 50px;
+}
+
+button.fetch:hover {
+    background-color: green;
 }

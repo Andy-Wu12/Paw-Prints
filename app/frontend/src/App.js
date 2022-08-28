@@ -74,7 +74,8 @@ function DogQueryForm({queryOptions}) {
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
   const imageCount = 25;
-  
+
+  // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
     e.preventDefault();
     setPosted(true);
@@ -109,7 +110,7 @@ function DogQueryForm({queryOptions}) {
         <select name="breeds" id="breeds">
           {breedOptions}
         </select>
-        <button type="submit">Fetch</button>
+        <button className="fetch" type="submit">Fetch</button>
       </form>
       <br/>
       {imageSectionHTML}
@@ -128,21 +129,20 @@ function QueryBreedSection() {
   );
 }
 
-
 function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
+  const [fetching, setFetching] = useState(false);
 
-  useEffect(() => {
+  function fetchImage() {
     fetch('http://localhost:3011/dog/get-random')
     .then(response => response.json())
     .then(data => setImageLink(data['message']));
-
-  }, []);
+  };
 
   return (
     <div className='random-image-container'>
       <h1> Random Dog Image </h1>
-      <p> See a random dog photo every time you reload the page! </p>
+      <p> <button className='fetch' onClick={fetchImage}>Fetch</button> a new image </p>
       <img className='dog-image' src={imageLink} alt='Dog' />
     </div>
   );
