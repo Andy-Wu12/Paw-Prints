@@ -1,6 +1,21 @@
 
+body {
+    color: #ffffff;
+    background-color: #121212;
+}
+
 .dog-image {
-    width: 200px;
-    height: 200px;
+    width: 75%;
+    height: 75%;
     
+}
+
+.navbar a:hover {
+    background-color: skyblue;
+    color: black;
+}
+
+.navbar a.home {
+    background-color: green;
+    color: white; 
 }

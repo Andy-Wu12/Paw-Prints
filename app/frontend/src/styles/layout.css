@@ -1,0 +1,28 @@
+
+body {
+    text-align: center;
+}
+
+.navbar {
+    background-color: #404040;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.dog-images {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: unset;
+}
