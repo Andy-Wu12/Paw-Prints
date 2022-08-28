@@ -73,7 +73,7 @@ function DogQueryForm({queryOptions}) {
 
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
-  const imageCount = 25;
+  const imageCount = 27;
 
   // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
@@ -135,14 +135,15 @@ function RandomDogImage() {
   function fetchImage() {
     fetch('http://localhost:3011/dog/get-random')
     .then(response => response.json())
-    .then(data => setImageLink(data['message']));
+    .then(data => setImageLink(data['message']))
+    .catch(error => setImageLink(''));
   };
 
   return (
     <div className='random-image-container'>
       <h1> Random Dog Image </h1>
       <p> <button className='fetch' onClick={fetchImage}>Fetch</button> a new image </p>
-      {imageLink && <img className='dog-image' src={imageLink} alt='Dog' />}
+      {imageLink && <img className='random-dog-image' src={imageLink} alt='Dog' />}
     </div>
   );
 }
@@ -164,7 +165,7 @@ function ImageList(props) {
     availableIdx.pop();
 
     const imgSrc = props.images[imageIndex];
-    const img = <img key={`image${i}`} className='dog-image' src={imgSrc} alt='Dog' />;
+    const img = <img key={`image${i}`} className='list-dog-image' src={imgSrc} alt='Dog' />;
     imageList.push(img);
 
   }

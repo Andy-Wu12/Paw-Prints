@@ -4,9 +4,14 @@ body {
     background-color: #121212;
 }
 
-.dog-image {
+.list-dog-image {
     width: 75%;
     height: 75%;
+}
+
+.random-dog-image {
+    max-width: 75vw;
+    max-height: 75vh;
 }
 
 .navbar a:hover {
