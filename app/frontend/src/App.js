@@ -31,18 +31,28 @@ function App() {
 function DataFetcher({url, ComponentToRender}) {
   const [data, setData] = useState();
   useEffect(() => {
+    let ignore = false;
+
     const fetchData = async () => {
       const response = await fetch(url);
-      const json = await response.json();
-      setData(json);
+      if(!ignore) {
+        const json = await response.json();
+        setData(json);
+      }
     }
+
     fetchData();
-  }, []);
+
+    return () => {
+      ignore = true;
+    };
+  }, [url]);
 
   return data && <ComponentToRender queryOptions={data} />
 }
 
 function DogQueryForm({queryOptions}) {
+  const [breed, setBreed] = useState('');
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
 
@@ -50,13 +60,8 @@ function DogQueryForm({queryOptions}) {
   // Config number of images to pull from API
   const imageCount = 25;
   
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    setPosted(true);
-    const breed = e.target.breeds.value.trim().toLowerCase();
-
-
+  useEffect(() => {
+    let ignore = false;
     if(breed !== undefined && breed.length > 0) {
       fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
       .then(response => response.json())
@@ -65,6 +70,13 @@ function DogQueryForm({queryOptions}) {
         setImageLinks([]);
       });
     }
+    
+  }, [breed]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setPosted(true);
+    setBreed(e.target.breeds.value.trim().toLowerCase());
   }
 
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
@@ -169,7 +181,6 @@ function queryOptionsToHTML(data) {
       }
     }
     else {
-      const breedStr = breed;
       const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
       // console.log(optionHTML);
       options.push(optionHTML);
