@@ -56,7 +56,7 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 
 });
 
-// Route to fetch all images of breed (including sub-breeds)
+// Route to fetch all images of breed
 router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];

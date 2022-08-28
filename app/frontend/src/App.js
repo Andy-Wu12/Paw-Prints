@@ -7,6 +7,8 @@ function App() {
 
   return (
     <div className="App">
+      {/* React fires useEffect() twice, which causes NS_BINDING_ABORTED error 
+      in Firefox for every image rendered on first fetch after page load */}
       <section id='QueryBreedSection'>
         <DataFetcher url='http://localhost:3011/breeds' 
         ComponentToRender={DogQueryForm} />
