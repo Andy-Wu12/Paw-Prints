@@ -13,10 +13,10 @@ app.use(cors({origin: '*'}));
 router.get('/', (ctx) => {
 	ctx.body = {'Server\'s API Endpoints': {
 		'Getting random dog image': {
-			'link' : '/dog/get-random',
+			'route' : '/dog/get-random',
 			'example' : 'http://localhost:3011/dog/get-random'},
 		'Getting random images by breed': {
-			'link' : '/dog/:breed/:subBreed/get-images/:amount',
+			'route' : '/dog/:breed/:subBreed/get-images/:amount',
 			'example' : 'http://localhost:3011/dog/retriever/golden/get-images/50'}
 	}};
 });
