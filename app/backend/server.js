@@ -15,9 +15,15 @@ router.get('/', (ctx) => {
 		'Getting random dog image': {
 			'route' : '/dog/get-random',
 			'example' : 'http://localhost:3011/dog/get-random'},
-		'Getting random images by breed': {
+		'Getting random images for dogs with sub-breeds': {
 			'route' : '/dog/:breed/:subBreed/get-images/:amount',
-			'example' : 'http://localhost:3011/dog/retriever/golden/get-images/50'}
+			'example' : 'http://localhost:3011/dog/retriever/golden/get-images/50'},
+		'Getting random images by breed (no sub-breeds)': {
+			'route': '/dog/:breed/get-images/:amount',
+			'example': 'http://localhost:3011/dog/germanshepherd/get-images/25'},
+		'Get all available breed names': {
+			'route': '/breeds',
+			'example': 'http://localhost:3011/breeds'}
 	}};
 });
 
