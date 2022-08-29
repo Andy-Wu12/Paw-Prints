@@ -1,4 +1,6 @@
+import React, { useEffect, useState } from 'react';
 
+// Functional helpers
 export function getRandomIntInRange(rangeEnd) {
     return Math.floor(Math.random() * rangeEnd);
 }
@@ -31,3 +33,67 @@ export function queryOptionsToHTML(data) {
     return options;
 
 }
+
+// Component helpers
+
+// Used as parent of components that need to render data after fetching
+// but difficult to manage own state or need to render using fetched data
+// 
+// Since fetch is async, guaranteeing data received before render function is
+// called is impossible in the same function, 
+// so this component handles state of said data and
+// conditionally renders 'ComponentToRender' only when that data is received.
+export function DataFetcher({url, ComponentToRender}) {
+    const [data, setData] = useState(null);
+    useEffect(() => {
+  
+      const fetchData = async () => {
+        const response = await fetch(url);
+          const json = await response.json();
+          setData(json);
+      }
+  
+      fetchData();
+  
+    }, [url]);
+  
+    if(data == null) { 
+      return (
+        <>
+          <h1> Fetching page data </h1>
+          <p> If this page doesn't load by itself, there may be an issue with the server </p> 
+        </>
+      )
+    }
+    return data && <ComponentToRender queryOptions={data} />
+  }
+
+export function ImageList(props) {
+    const srcListLength = props.images.length;
+    const renderLength = Math.min(props.desiredLength, srcListLength);
+    const imageList = [];
+  
+    // Track chosen indices to prevent duplicate images from being picked
+    const availableIdx = [...Array(srcListLength).keys()]; 
+  
+    for(let i = 0; i < renderLength; i++) {
+      const randomIndex = getRandomIntInRange(availableIdx.length);
+      const imageIndex = availableIdx[randomIndex];
+  
+      // Swap last element with chosen element and pop to prevent duplicate copies
+      availableIdx[randomIndex] = availableIdx[availableIdx.length - 1]
+      availableIdx.pop();
+  
+      const imgSrc = props.images[imageIndex];
+      const img = <img key={`image${i}`} className='list-dog-image' src={imgSrc} alt='Dog' />;
+      imageList.push(img);
+  
+    }
+  
+    // console.log(imageList);
+    return (
+      <div className='dog-images'>
+        {imageList}
+      </div>
+    );
+  }
