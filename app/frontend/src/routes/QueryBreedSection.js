@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 
-import { ImageList, queryOptionsToHTML, DataFetcher } from '../util';
+import { ImageList, queryOptionsToHTML, generateOptionRange ,DataFetcher } from '../util';
 
 function DogQueryForm({queryOptions}) {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
+  const [imageCount, setImageCount] = useState(9);
 
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
-  const imageCount = 27;
+  const imageCountOptions = generateOptionRange(1, 50);
 
   // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
     e.preventDefault();
     setPosted(true);
+    setImageCount(e.target.imageCount.value);
+    console.log(imageCount);
     const breed = e.target.breeds.value.trim().toLowerCase();
 
     if(breed !== undefined && breed.length > 0) {
@@ -39,8 +42,14 @@ function DogQueryForm({queryOptions}) {
   return (
     <div className='query-form'>
       <h1>Lots of dogs! 🐕</h1>
-      <p>See {imageCount} random photos of your favorite dogs</p>
       <form onSubmit={handleSubmit}>
+        <p>
+          See 
+          <select name='imageCount' id='imageCount'> 
+            {imageCountOptions}
+          </select> 
+          random photos of your favorite dogs
+        </p>
         <label htmlFor="breeds"> Select a breed: </label>
         <select name="breeds" id="breeds">
           {breedOptions}

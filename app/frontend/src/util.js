@@ -34,6 +34,19 @@ export function queryOptionsToHTML(data) {
 
 }
 
+export function generateOptionRange(start, end) {
+	let options = [];
+	for(let i = start; i <= end; i++) {
+		const option = <option key={`${i}-images`} value={i}> {i} </option>;
+		// const option = document.createElement('option');
+		// option.value = i;
+		// option.key = `${i}-images`;
+		options.push(option);
+	}
+
+	return options;
+}
+
 // Component helpers
 
 // Used as parent of components that need to render data after fetching
