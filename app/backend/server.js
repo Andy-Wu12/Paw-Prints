@@ -7,6 +7,8 @@ const app = new Koa();
 const router = new Router();
 const port = 3011;
 
+// Max number of images available in one query.
+const maxCount = 50;
 
 app.use(cors({origin: '*'}));
 
@@ -51,7 +53,10 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
 	const subBreed = ctx.params['subBreed'];
-	const imageCount = ctx.params['amount'];
+	let imageCount = ctx.params['amount'];
+	if(imageCount > maxCount) {
+		imageCount = maxCount;
+	}
 	const url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${imageCount}`;
 	const queryData = await fetch(url)
 		.then(function(response) {
@@ -73,7 +78,10 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
-	const imageCount = ctx.params['amount'];
+	let imageCount = ctx.params['amount'];
+	if(imageCount > maxCount) {
+		imageCount = maxCount;
+	}
 	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
 	const queryData = await fetch(url)
 		.then(function(response) {
