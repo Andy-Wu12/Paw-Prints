@@ -15,12 +15,13 @@ function DogQueryForm({queryOptions}) {
   function handleSubmit(e) {
     e.preventDefault();
     setPosted(true);
+    const newCount = e.target.imageCount.value;
     setImageCount(e.target.imageCount.value);
-    console.log(imageCount);
+
     const breed = e.target.breeds.value.trim().toLowerCase();
 
     if(breed !== undefined && breed.length > 0) {
-      fetch(`http://localhost:3011/dog/${breed}/get-images/${imageCount}`)
+      fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`)
       .then(response => response.json())
       .then(data => setImageLinks(data['message']))
       .catch(error => {
@@ -32,6 +33,7 @@ function DogQueryForm({queryOptions}) {
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
   if(posted) {
     if(imageLinks.length > 0) {
+      console.log(imageCount);
       imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
     }
     else {
