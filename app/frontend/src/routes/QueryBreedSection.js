@@ -9,14 +9,19 @@ function DogQueryForm({queryOptions}) {
 
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
+  const maxImageCount = 50;
   const imageCountOptions = generateOptionRange(1, 50);
 
   // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
     e.preventDefault();
     setPosted(true);
-    const newCount = e.target.imageCount.value;
-    setImageCount(e.target.imageCount.value);
+    let newCount = e.target.imageCount.value;
+    // In case user decides to edit options in inspector
+    if(newCount > maxImageCount) {
+      newCount = 50;
+    }
+    setImageCount(newCount);
 
     const breed = e.target.breeds.value.trim().toLowerCase();
 
@@ -33,7 +38,6 @@ function DogQueryForm({queryOptions}) {
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
   if(posted) {
     if(imageLinks.length > 0) {
-      console.log(imageCount);
       imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
     }
     else {
