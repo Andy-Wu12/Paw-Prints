@@ -15,28 +15,30 @@ function DogQueryForm({queryOptions}) {
   const maxImageCount = 50;
   const imageCountOptions = generateOptionRange(1, 50);
 
-  // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
     e.preventDefault();
-    throttle(() => {
-      setPosted(true);
-      let newCount = e.target.imageCount.value;
-      // In case user decides to edit options in inspector
-      if(newCount > maxImageCount) {
-        newCount = 50;
-      }
-      setImageCount(newCount);
+    throttle(async () => {
+      try {
+        setPosted(true);
+        let newCount = e.target.imageCount.value;
+        // In case user decides to edit options in inspector
+        if(newCount > maxImageCount) {
+          newCount = 50;
+        }
+        setImageCount(newCount);
 
-      const breed = e.target.breeds.value.trim().toLowerCase();
+        const breed = e.target.breeds.value.trim().toLowerCase();
 
-      if(breed !== undefined && breed.length > 0) {
-        fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`)
-        .then(response => response.json())
-        .then(data => setImageLinks(data['message']))
-        .catch(error => {
-          setImageLinks([]);
-        })
+        if(breed !== undefined && breed.length > 0) {
+          const response = await fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`);
+          const data = await response.json();
+          if(data.status === "success") setImageLinks(data['message']);
+          else setImageLinks([]);
+        }
+      } catch(error) {
+        setImageLinks([]);
       }
+      
     }, fetchDelay, timerObject);
   }
 

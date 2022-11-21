@@ -9,17 +9,18 @@ export function RandomDogImage() {
   const [imageLink, setImageLink] = useState('');
 
   function fetchImage() {
-    throttle(() => {
-      fetch('http://localhost:3011/dog/get-random')
-      .then(response => response.json())
-      .then(data => {
-        setImageLink(data['message']);
-        setPosted(true);
-      })
-      .catch(error => {
+    throttle(async () => {
+      try {
+        const response = await fetch('http://localhost:3011/dog/get-random');
+        const data = await response.json();
+        if(data.status === "success") {
+          setImageLink(data['message']);
+          setPosted(true);
+        }
+      } catch(error) {
         setImageLink('');
         setPosted(false);
-      });
+      }
     }, fetchDelay, timerObject);
   };
 
