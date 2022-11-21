@@ -31,21 +31,18 @@ router.get('/', (ctx) => {
 
 // Route to fetch from Dog API's 'random' endpoint
 router.get('/dog/get-random', async (ctx) => {
-	const queryData = await fetch('https://dog.ceo/api/breeds/image/random')
-		.then(function(response) {
-			if(response.status >= 400) {
-				throw new Error("Bad response from server");
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			// console.log(data);
-			return data;
-		})
-		.catch(error => {throw new Error(error)});
-	
-	ctx.body = queryData;
+	try {
+		const response = await fetch('https://dog.ceo/api/breeds/image/random');
+		if(response.status >= 400) {
+			throw new Error('Bad response from server');
+		}
+		const data = await response.json();
+		ctx.body = data;
 
+	} catch(error) {
+		ctx.status = 500;
+		ctx.body = 'Please try again later';
+	}
 });
 
 // Route to fetch random images of specific sub-breed
@@ -58,19 +55,18 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 		imageCount = maxCount;
 	}
 	const url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${imageCount}`;
-	const queryData = await fetch(url)
-		.then(function(response) {
-			if(!response.ok) {
-				throw new Error("Bad response from server");
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			return data;
-		})
-		.catch(error => {throw new Error(error)});
-	
-	ctx.body = queryData;
+	try {
+		const response = await fetch(url);
+		if(response.status >= 400) {
+			throw new Error("Bad response from server");
+		}
+		const data = await response.json();
+		ctx.body = data;
+
+	} catch(error) {
+		ctx.status = 500;
+		ctx.body = 'Please try again later';
+	}
 
 });
 
@@ -83,38 +79,37 @@ router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 		imageCount = maxCount;
 	}
 	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
-	const queryData = await fetch(url)
-		.then(function(response) {
-			if(!response.ok) {
-				throw new Error("Bad response from server");
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			return data;
-		})
-		.catch(error => {throw new Error(error)});
-	
-	ctx.body = queryData;
+	try {
+		const response = await fetch(url);
+		if(response.status >= 400) {
+			throw new Error("Bad response from server");
+		}
+		const data = await response.json();
+		ctx.body = data;
+
+	} catch(error) {
+		ctx.status = 500;
+		ctx.body = 'Please try again later';
+	}
 
 });
 
 // Fetch all breed names
 router.get('/breeds', async (ctx) => {
 	const url = 'https://dog.ceo/api/breeds/list/all';
-	const breedData = await fetch(url)
-		.then(function(response) {
-			if(!response.ok) {
-				throw new Error("Bad response from server");
-			}
-			return response.json();
-		})
-		.then(function(data) {
-			return data;
-		})
-		.catch(error => {throw new Error(error)});
+	try {
+		const response = await fetch(url);
+		if(response.status >= 400) {
+			throw new Error("Bad response from server");
+		}
+		const data = await response.json();
+		ctx.body = data;
+
+	} catch(error) {
+		ctx.status = 500;
+		ctx.body = 'Please try again later';
+	}
 	
-	ctx.body = breedData;
 });
 
 app.use(async (ctx, next) => {
