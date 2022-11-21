@@ -2,6 +2,19 @@ import React, { useState } from 'react';
 
 import { ImageList, queryOptionsToHTML, generateOptionRange ,DataFetcher } from '../util';
 
+let timerId;
+
+function throttle(func, msDelay) {
+  if(timerId) {
+    return;
+  }
+
+  func();
+  timerId = setTimeout(function() {
+    timerId = undefined;
+  }, msDelay);
+};
+
 function DogQueryForm({queryOptions}) {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
@@ -15,24 +28,26 @@ function DogQueryForm({queryOptions}) {
   // TODO: Find way to stop user from spamming fetches
   function handleSubmit(e) {
     e.preventDefault();
-    setPosted(true);
-    let newCount = e.target.imageCount.value;
-    // In case user decides to edit options in inspector
-    if(newCount > maxImageCount) {
-      newCount = 50;
-    }
-    setImageCount(newCount);
+    throttle(() => {
+      setPosted(true);
+      let newCount = e.target.imageCount.value;
+      // In case user decides to edit options in inspector
+      if(newCount > maxImageCount) {
+        newCount = 50;
+      }
+      setImageCount(newCount);
 
-    const breed = e.target.breeds.value.trim().toLowerCase();
+      const breed = e.target.breeds.value.trim().toLowerCase();
 
-    if(breed !== undefined && breed.length > 0) {
-      fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`)
-      .then(response => response.json())
-      .then(data => setImageLinks(data['message']))
-      .catch(error => {
-        setImageLinks([]);
-      })
-    }
+      if(breed !== undefined && breed.length > 0) {
+        fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`)
+        .then(response => response.json())
+        .then(data => setImageLinks(data['message']))
+        .catch(error => {
+          setImageLinks([]);
+        })
+      }
+    }, 3000);
   }
 
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
