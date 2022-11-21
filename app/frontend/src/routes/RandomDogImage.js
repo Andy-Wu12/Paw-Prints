@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
+import {throttle} from '../util';
 
+let timerObject = {id: null};
+let fetchDelay = 3000 // ms
 
 export function RandomDogImage() {
   const [posted, setPosted] = useState(null);
   const [imageLink, setImageLink] = useState('');
 
   function fetchImage() {
-    fetch('http://localhost:3011/dog/get-random')
-    .then(response => response.json())
-    .then(data => {
-      setImageLink(data['message']);
-      setPosted(true);
-    })
-    .catch(error => {
-      setImageLink('');
-      setPosted(false);
-    });
+    throttle(() => {
+      fetch('http://localhost:3011/dog/get-random')
+      .then(response => response.json())
+      .then(data => {
+        setImageLink(data['message']);
+        setPosted(true);
+      })
+      .catch(error => {
+        setImageLink('');
+        setPosted(false);
+      });
+    }, fetchDelay, timerObject);
   };
 
   return (

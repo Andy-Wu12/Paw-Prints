@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ImageList, queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
 
 let timerObject = {id: null};
+let fetchDelay = 3000;
 
 function DogQueryForm({queryOptions}) {
   const [posted, setPosted] = useState(false);
@@ -36,7 +37,7 @@ function DogQueryForm({queryOptions}) {
           setImageLinks([]);
         })
       }
-    }, 3000, timerObject);
+    }, fetchDelay, timerObject);
   }
 
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
