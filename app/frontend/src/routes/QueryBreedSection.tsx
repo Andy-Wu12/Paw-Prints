@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 import { ImageList, queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
 
 let timerObject = {id: null};
 let fetchDelay = 3000;
 
-function DogQueryForm({queryOptions}) {
+interface DogFormProps {
+  queryOptions: 
+    {
+      message: Object,
+      status: string
+    }
+}
+
+function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
   const [imageCount, setImageCount] = useState(9);
@@ -15,19 +23,19 @@ function DogQueryForm({queryOptions}) {
   const maxImageCount = 50;
   const imageCountOptions = generateOptionRange(1, 50);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: any) {
     e.preventDefault();
     throttle(async () => {
       try {
         setPosted(true);
-        let newCount = e.target.imageCount.value;
+        let newCount: number = e.target.imageCount.value;
         // In case user decides to edit options in inspector
         if(newCount > maxImageCount) {
           newCount = 50;
         }
         setImageCount(newCount);
 
-        const breed = e.target.breeds.value.trim().toLowerCase();
+        const breed: string = e.target.breeds.value.trim().toLowerCase();
 
         if(breed !== undefined && breed.length > 0) {
           const response = await fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`);
@@ -75,7 +83,7 @@ function DogQueryForm({queryOptions}) {
   );
 }
 
-export function QueryBreedSection() {
+export function QueryBreedSection(): ReactElement {
   return (
   <>
     <section id='QueryBreedSection'>
