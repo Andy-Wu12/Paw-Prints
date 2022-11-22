@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {throttle} from '../util';
+import { throttle } from '../util';
 
 let timerObject = {id: null};
 let fetchDelay = 3000 // ms

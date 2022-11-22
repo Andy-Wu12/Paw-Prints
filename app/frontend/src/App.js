@@ -2,8 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import './styles/style.css';
 import './styles/layout.css';
-import { RandomDogImage } from './routes/RandomDogImage';
-import { QueryBreedSection } from './routes/QueryBreedSection';
+import { RandomDogImage } from './routes/RandomDogImage.tsx';
+import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
 
 function App() {
 
