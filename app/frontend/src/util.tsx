@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 // Functional helpers
-export function getRandomIntInRange(rangeEnd) {
+export function getRandomIntInRange(rangeEnd: number): number {
     return Math.floor(Math.random() * rangeEnd);
 }
   
 // Convert select-option data into HTML
-export function queryOptionsToHTML(data) {
-    let options = [];
+export function queryOptionsToHTML(data: any): JSX.Element[] {
+    let options: JSX.Element[] = [];
 
     // ES6 - valid syntax
-    for(const [key, value] of Object.entries(data['message'])) {
+    for(const [key, value] of Object.entries(data.message)) {
         const breed = key;
-        const subBreeds = value;
+        const subBreeds: any = value;
         
         if(subBreeds.length > 0) {
             for(let i = 0; i < subBreeds.length; i++) {
@@ -25,8 +25,8 @@ export function queryOptionsToHTML(data) {
             }
         }
         else {
-        const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
-        options.push(optionHTML);
+          const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
+          options.push(optionHTML);
         }
 
     }
@@ -34,7 +34,7 @@ export function queryOptionsToHTML(data) {
 
 }
 
-export function generateOptionRange(start, end) {
+export function generateOptionRange(start: number, end: number) {
 	let options = [];
 	for(let i = start; i <= end; i++) {
 		const option = <option key={`${i}-images`} value={i}> {i} </option>;
@@ -56,21 +56,26 @@ export function generateOptionRange(start, end) {
 // called is impossible in the same function, 
 // so this component handles state of said data and
 // conditionally renders 'ComponentToRender' only when that data is received.
-export function DataFetcher({url, ComponentToRender}) {
-  const [data, setData] = useState(null);
-  useEffect(() => {
+interface DataFetcherProps {
+  url: string,
+  ComponentToRender: any
+}
 
+export function DataFetcher({url, ComponentToRender}: DataFetcherProps): ReactElement {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(url);
-        const json = await response.json();
-        setData(json);
+      const json = await response.json();
+      setData(json);
     }
 
     fetchData();
 
   }, [url]);
 
-  if(data == null) { 
+  if(!data) { 
     return (
       <>
         <h1> Fetching page data </h1>
@@ -78,12 +83,17 @@ export function DataFetcher({url, ComponentToRender}) {
       </>
     )
   }
-  return data && <ComponentToRender queryOptions={data} />
+  return <ComponentToRender queryOptions={data} />
 }
 
-export function ImageList(props) {
-  const srcListLength = props.images.length;
-  const renderLength = Math.min(props.desiredLength, srcListLength);
+interface ImageProps {
+  images: any,
+  desiredLength: number
+}
+
+export function ImageList({images, desiredLength}: ImageProps): ReactElement {
+  const srcListLength = images.length;
+  const renderLength = Math.min(desiredLength, srcListLength);
   const imageList = [];
 
   // Track chosen indices to prevent duplicate images from being picked
@@ -97,7 +107,7 @@ export function ImageList(props) {
     availableIdx[randomIndex] = availableIdx[availableIdx.length - 1]
     availableIdx.pop();
 
-    const imgSrc = props.images[imageIndex];
+    const imgSrc = images[imageIndex];
     const img = <img key={`image${i}`} className='list-dog-image' src={imgSrc} alt='Dog' />;
     imageList.push(img);
 
@@ -111,13 +121,13 @@ export function ImageList(props) {
   );
 }
 
-export function throttle(func, msDelay, timeObj) {
+export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}): void {
   if(timeObj.id) {
     return;
   }
 
   func();
   timeObj.id = setTimeout(function() {
-    timeObj.id = undefined;
+    timeObj.id = null;
   }, msDelay);
 };
