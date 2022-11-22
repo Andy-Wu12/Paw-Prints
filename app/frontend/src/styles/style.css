@@ -26,15 +26,16 @@ body {
 
 button.fetch {
     border: none;
-    border-radius: 30%;
+    border-radius: 10%;
     font-size: large;
     font-weight: bolder;
-    background-color: darkgreen;
+    background-color: #404040;
     color: white;
     width: 100px;
-    height: 50px;
+    height: 25px;
 }
 
 button.fetch:hover {
-    background-color: green;
+    background-color: white;
+    color: #404040;
 }
