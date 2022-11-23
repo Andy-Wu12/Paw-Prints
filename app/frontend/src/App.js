@@ -4,6 +4,7 @@ import './styles/style.css';
 import './styles/layout.css';
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
+import { useEffect, useState } from 'react';
 
 function App() {
 
@@ -32,8 +33,37 @@ function App() {
 }
 
 function Home() {
+  const [imageLink, setImageLink] = useState(null);
+
+  useEffect(() => {
+    const getRandomImage = async () => {
+      try {
+        const response = await fetch('http://localhost:3011/dog/get-random');
+        const data = await response.json();
+        if(data.status === "success") {
+          setImageLink(data['message']);
+        }
+      } catch (e) {
+        setImageLink(null);
+      }
+    }
+
+    getRandomImage();
+
+  }, []);
+
   return (
-    <h1> Welcome! Click one of the buttons below to get started. </h1>
+    <>
+      <h1> Welcome! Click one of the buttons below to get started. </h1>
+      <div className='homepage' style={
+        {
+          backgroundImage: `url(${imageLink})`, 
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+          height: '80vh'
+        }}>
+      </div>
+    </>
   );
 }
 
