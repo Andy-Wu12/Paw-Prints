@@ -28,8 +28,11 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
     throttle(async () => {
       try {
         setPosted(true);
-        let newCount: number = e.target.imageCount.value;
+        let newCount: number = parseInt(e.target.imageCount.value);
         // In case user decides to edit options in inspector
+        if(isNaN(newCount) || newCount < 0) {
+          newCount = 1;
+        }
         if(newCount > maxImageCount) {
           newCount = 50;
         }
@@ -40,6 +43,7 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
         if(breed !== undefined && breed.length > 0) {
           const response = await fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`);
           const data = await response.json();
+          console.log(data);
           if(data.status === "success") setImageLinks(data['message']);
           else setImageLinks([]);
         }
