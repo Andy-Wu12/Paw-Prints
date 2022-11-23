@@ -47,6 +47,17 @@ export function generateOptionRange(start: number, end: number) {
 	return options;
 }
 
+export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}): void {
+  if(timeObj.id) {
+    return;
+  }
+
+  func();
+  timeObj.id = setTimeout(function() {
+    timeObj.id = null;
+  }, msDelay);
+};
+
 // Component helpers
 
 // Used as parent of components that need to render data after fetching
@@ -56,7 +67,7 @@ export function generateOptionRange(start: number, end: number) {
 // called is impossible in the same function, 
 // so this component handles state of said data and
 // conditionally renders 'ComponentToRender' only when that data is received.
-interface DataFetcherProps {
+type DataFetcherProps = {
   url: string,
   ComponentToRender: any
 }
@@ -86,7 +97,7 @@ export function DataFetcher({url, ComponentToRender}: DataFetcherProps): ReactEl
   return <ComponentToRender queryOptions={data} />
 }
 
-interface ImageProps {
+type ImageProps = {
   images: any,
   desiredLength: number
 }
@@ -108,12 +119,11 @@ export function ImageList({images, desiredLength}: ImageProps): ReactElement {
     availableIdx.pop();
 
     const imgSrc = images[imageIndex];
-    const img = <img key={`image${i}`} className='list-dog-image' src={imgSrc} alt='Dog' />;
+    const img = <ClickableImage key={`image${i}`} href={imgSrc} className='list-dog-image' altText='Dog' />
     imageList.push(img);
 
   }
 
-  // console.log(imageList);
   return (
     <div className='dog-images'>
       {imageList}
@@ -121,13 +131,19 @@ export function ImageList({images, desiredLength}: ImageProps): ReactElement {
   );
 }
 
-export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}): void {
-  if(timeObj.id) {
-    return;
-  }
+type ClickableImageProps = {
+  href: string,
+  className: string,
+  altText: string,
+  key: string
+}
 
-  func();
-  timeObj.id = setTimeout(function() {
-    timeObj.id = null;
-  }, msDelay);
-};
+export function ClickableImage({href, className, altText, key}: ClickableImageProps): ReactElement {
+  return (
+    <>
+      <a key={key} href={href} target="_blank" rel="noreferrer">
+        <img className={className} src={href} alt={altText} />
+      </a>
+    </>
+  )
+}
