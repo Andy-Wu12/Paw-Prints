@@ -24,7 +24,7 @@ To start up the server in the backend,
 ```sh
 cd app/backend
 npm install
-node server.js
+npx ts-node server.ts
 ```
 
 If the server starts successfully, you will see
