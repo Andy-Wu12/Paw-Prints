@@ -133,9 +133,9 @@ export function ImageList({images, desiredLength}: ImageProps): ReactElement {
 
 type ClickableImageProps = {
   href: string,
-  className: string,
+  className?: string,
   altText: string,
-  key: string
+  key?: string
 }
 
 export function ClickableImage({href, className, altText, key}: ClickableImageProps): ReactElement {
