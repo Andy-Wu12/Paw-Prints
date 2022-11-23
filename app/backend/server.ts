@@ -50,12 +50,17 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
 	const subBreed = ctx.params['subBreed'];
-	let imageCount = ctx.params['amount'];
-	if(imageCount > maxCount) {
-		imageCount = maxCount;
-	}
-	const url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${imageCount}`;
+
 	try {
+		let imageCount = parseInt(ctx.params['amount']);
+		if(isNaN(imageCount) || imageCount < 0) {
+			imageCount = 1;
+		}
+		else if(imageCount > maxCount) {
+			imageCount = maxCount;
+		}
+
+		const url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${imageCount}`;
 		const response = await fetch(url);
 		if(response.status >= 400) {
 			throw new Error("Bad response from server");
@@ -74,12 +79,17 @@ router.get('/dog/:breed/:subBreed/get-images/:amount', async (ctx) => {
 router.get('/dog/:breed/get-images/:amount', async (ctx) => {
 	// named route parameters ( :name ) are captured and added to ctx.params (dictionary)
 	const breed = ctx.params['breed'];
-	let imageCount = ctx.params['amount'];
-	if(imageCount > maxCount) {
-		imageCount = maxCount;
-	}
-	const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
+	
 	try {
+		let imageCount = parseInt(ctx.params['amount']);
+		if(isNaN(imageCount) || imageCount < 0) {
+			imageCount = 1;
+		}
+		else if(imageCount > maxCount) {
+			imageCount = maxCount;
+		}
+
+		const url = `https://dog.ceo/api/breed/${breed}/images/random/${imageCount}`;
 		const response = await fetch(url);
 		if(response.status >= 400) {
 			throw new Error("Bad response from server");
@@ -115,7 +125,7 @@ router.get('/breeds', async (ctx) => {
 app.use(async (ctx, next) => {
 	await next();
 	const rt = ctx.response.get('X-Response-Time');
-	console.log(`${ctx.method} ${ctx.url} - ${rt}`);
+	// console.log(`${ctx.method} ${ctx.url} - ${rt}`);
 });
 
 app.use(async (ctx, next) => {
