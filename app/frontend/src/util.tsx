@@ -135,13 +135,12 @@ type ClickableImageProps = {
   href: string,
   className?: string,
   altText: string,
-  key?: string
 }
 
-export function ClickableImage({href, className, altText, key}: ClickableImageProps): ReactElement {
+export function ClickableImage({href, className, altText}: ClickableImageProps): ReactElement {
   return (
     <>
-      <a key={key} href={href} target="_blank" rel="noreferrer">
+      <a href={href} target="_blank" rel="noreferrer">
         <img className={className} src={href} alt={altText} />
       </a>
     </>
