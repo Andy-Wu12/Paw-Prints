@@ -5,30 +5,59 @@ import './styles/layout.css';
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
 import { useEffect, useState } from 'react';
+import LightModeButton from './components/LightModeButton.tsx';
+
+// Material UI
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const lightTheme = createTheme({
+  palette: {
+    background: {
+      default: "e4f0e2"
+    }
+  }
+});
+
+const darkTheme = createTheme({
+  palette: {
+    background: {
+      default: "#222"
+    },
+    text: {
+      primary: "#fff"
+    }
+  }
+})
 
 function App() {
+  const [isLight, setIsLight] = useState(false);
 
   return (
-    <div className="App">
-      <Routes>
-        {/* NS_BINDING_ABORTED error occurs for every image 
-        received in first fetch after every page (re)load
-        The same images then load successfully immediately afterward.
-        NOTE: Error seems to only be occurring on Firefox */}
-        <Route path="/" element={<Home />} />
-        <Route path="/get-breed" element={<QueryBreedSection />} />
-        <Route path="/get-random" element={<RandomDogImage />} />
-        {/* <section id='RandomImage'>
-          <RandomDogImage />
-        </section> */}
-      </Routes>
-      <div className="navbar">
-        <a href='/' className='home'> Home </a>
-        <a href='/get-breed'> Search Breeds </a>
-        <a href='/get-random'> Random Dogs </a>
+    <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
+      <div className="App">
+        <CssBaseline />
+        <br/>
+        <LightModeButton isLight={isLight} setIsLight={setIsLight} />
+        <Routes>
+          {/* NS_BINDING_ABORTED error occurs for every image 
+          received in first fetch after every page (re)load
+          The same images then load successfully immediately afterward.
+          NOTE: Error seems to only be occurring on Firefox */}
+          <Route path="/" element={<Home />} />
+          <Route path="/get-breed" element={<QueryBreedSection />} />
+          <Route path="/get-random" element={<RandomDogImage />} />
+        </Routes>
+
+        
+        <div className="navbar">
+          <a href='/' className='home'> Home </a>
+          <a href='/get-breed'> Search Breeds </a>
+          <a href='/get-random'> Random Dogs </a>
+        </div>
+        <br/><br/>
       </div>
-      <br/><br/>
-    </div>
+    </ThemeProvider>
   );
 }
 
