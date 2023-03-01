@@ -10,6 +10,7 @@ import LightModeButton from './components/LightModeButton.tsx';
 // Material UI
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
 const lightTheme = createTheme({
   palette: {
@@ -37,8 +38,6 @@ function App() {
     <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
       <div className="App">
         <CssBaseline />
-        <br/>
-        <LightModeButton isLight={isLight} setIsLight={setIsLight} />
         <Routes>
           {/* NS_BINDING_ABORTED error occurs for every image 
           received in first fetch after every page (re)load
@@ -49,11 +48,11 @@ function App() {
           <Route path="/get-random" element={<RandomDogImage />} />
         </Routes>
 
-        
         <div className="navbar">
-          <a href='/' className='home'> Home </a>
-          <a href='/get-breed'> Search Breeds </a>
-          <a href='/get-random'> Random Dogs </a>
+          <Button variant="contained" color="secondary" href='/'> HOME </Button>
+          <Button variant="outlined" href='/get-breed'> Search Breeds </Button>
+          <Button variant="outlined" href='/get-random'> Random Dogs </Button>
+          <LightModeButton isLight={isLight} setIsLight={setIsLight} />
         </div>
         <br/><br/>
       </div>
@@ -89,7 +88,7 @@ function Home() {
           backgroundImage: `url(${imageLink})`, 
           backgroundSize: 'cover',
           backgroundAttachment: 'fixed',
-          height: '80vh'
+          height: '65vh',
         }}>
       </div>
     </>

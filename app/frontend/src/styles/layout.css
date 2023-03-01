@@ -10,7 +10,8 @@ body {
     width: 100%;
 }
 
-.navbar a {
+.navbar a,
+.navbar button {
     float: left;
     display: block;
     color: #FFFFFF;
