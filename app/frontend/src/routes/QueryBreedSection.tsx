@@ -3,11 +3,9 @@ import React, { ReactElement, useState } from 'react';
 import { ImageList, queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
 
 // Material UI
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { Button } from '@mui/material';
 
 let timerObject = {id: null};
@@ -25,7 +23,6 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
   const [imageCount, setImageCount] = useState(1);
-  const [breed, setBreed] = useState('');
 
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
@@ -47,6 +44,8 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
           newCount = 50;
         }
         setImageCount(newCount);
+        
+        const breed: string = e.target.breeds.value.trim().toLowerCase();
 
         if(breed !== undefined && breed.length > 0) {
           const response = await fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`);
@@ -87,8 +86,8 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
         
         <FormControl>
           <InputLabel id="breeds-select-label">Breed</InputLabel>
-          <Select name="breeds" labelId="breeds-select-label" id="breedSelector" label="Breed" value={breed} 
-          onChange={(event) => { setBreed(event.target.value.trim().toLowerCase()) }}>
+          <Select name="breeds" labelId="breeds-select-label" id="breedSelector" 
+          label="Breed" defaultValue={''}>
             {breedOptions}
           </Select>
         </FormControl>
