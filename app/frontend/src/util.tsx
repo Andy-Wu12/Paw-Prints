@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
+import { MenuItem } from '@mui/material';
 
 // Functional helpers
 export function getRandomIntInRange(rangeEnd: number): number {
@@ -19,13 +20,13 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
                 const subBreed = subBreeds[i];
                 const breedStr = `${subBreed} ${breed}`;
                 const breedValue = `${breed}/${subBreed}`;
-                const optionHTML = <option key={`${breed}option${i}`} value={breedValue}> {breedStr} </option>;
+                const optionHTML = <MenuItem key={`${breed}option${i}`} value={breedValue}> {breedStr} </MenuItem>;
                 // console.log(optionHTML);
                 options.push(optionHTML);
             }
         }
         else {
-          const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
+          const optionHTML = <MenuItem key={`${breed}option`} value={breed}> {breed} </MenuItem>;
           options.push(optionHTML);
         }
 
@@ -37,7 +38,7 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
 export function generateOptionRange(start: number, end: number) {
 	let options = [];
 	for(let i = start; i <= end; i++) {
-		const option = <option key={`${i}-images`} value={i}> {i} </option>;
+		const option = <MenuItem key={`${i}-images`} value={i}> {i} </MenuItem>;
 		// const option = document.createElement('option');
 		// option.value = i;
 		// option.key = `${i}-images`;

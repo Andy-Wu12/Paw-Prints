@@ -22,12 +22,7 @@ const lightTheme = createTheme({
 
 const darkTheme = createTheme({
   palette: {
-    background: {
-      default: "#222"
-    },
-    text: {
-      primary: "#fff"
-    }
+    mode: 'dark'
   }
 })
 
