@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
+import { MenuItem } from '@mui/material';
 
 // Functional helpers
 export function getRandomIntInRange(rangeEnd: number): number {
@@ -19,13 +20,13 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
                 const subBreed = subBreeds[i];
                 const breedStr = `${subBreed} ${breed}`;
                 const breedValue = `${breed}/${subBreed}`;
-                const optionHTML = <option key={`${breed}option${i}`} value={breedValue}> {breedStr} </option>;
+                const optionHTML = <MenuItem key={`${breed}option${i}`} value={breedValue}> {breedStr} </MenuItem>;
                 // console.log(optionHTML);
                 options.push(optionHTML);
             }
         }
         else {
-          const optionHTML = <option key={`${breed}option`} value={breed}> {breed} </option>;
+          const optionHTML = <MenuItem key={`${breed}option`} value={breed}> {breed} </MenuItem>;
           options.push(optionHTML);
         }
 
@@ -37,7 +38,7 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
 export function generateOptionRange(start: number, end: number) {
 	let options = [];
 	for(let i = start; i <= end; i++) {
-		const option = <option key={`${i}-images`} value={i}> {i} </option>;
+		const option = <MenuItem key={`${i}-images`} value={i}> {i} </MenuItem>;
 		// const option = document.createElement('option');
 		// option.value = i;
 		// option.key = `${i}-images`;
@@ -47,7 +48,7 @@ export function generateOptionRange(start: number, end: number) {
 	return options;
 }
 
-export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}): void {
+export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}, cleanUp: () => void): void {
   if(timeObj.id) {
     return;
   }
@@ -55,6 +56,7 @@ export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | R
   func();
   timeObj.id = setTimeout(function() {
     timeObj.id = null;
+    cleanUp();
   }, msDelay);
 };
 
@@ -135,13 +137,12 @@ type ClickableImageProps = {
   href: string,
   className?: string,
   altText: string,
-  key?: string
 }
 
-export function ClickableImage({href, className, altText, key}: ClickableImageProps): ReactElement {
+export function ClickableImage({href, className, altText}: ClickableImageProps): ReactElement {
   return (
     <>
-      <a key={key} href={href} target="_blank" rel="noreferrer">
+      <a href={href} target="_blank" rel="noreferrer">
         <img className={className} src={href} alt={altText} />
       </a>
     </>

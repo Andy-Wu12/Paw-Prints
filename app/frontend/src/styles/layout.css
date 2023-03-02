@@ -10,12 +10,13 @@ body {
     width: 100%;
 }
 
-.navbar a {
+.navbar a,
+.navbar button {
     float: left;
     display: block;
     color: #FFFFFF;
     text-align: center;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     text-decoration: none;
     font-size: 18px;
 }
@@ -25,4 +26,13 @@ body {
     justify-items: center;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: unset;
+}
+
+.breedQueryForm {
+    align-items: center;
+    justify-content: center;
+}
+
+#breedSelector {
+    width: clamp(200px, 50vw, 500px);
 }

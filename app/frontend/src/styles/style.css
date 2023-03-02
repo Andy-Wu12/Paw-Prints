@@ -1,8 +1,8 @@
 
-body {
+/* body {
     color: #ffffff;
     background-color: #121212;
-}
+} */
 
 .list-dog-image {
     width: 75%;
@@ -12,30 +12,4 @@ body {
 .random-dog-image {
     max-width: 75vw;
     max-height: 75vh;
-}
-
-.navbar a:hover {
-    background-color: skyblue;
-    color: black;
-}
-
-.navbar a.home {
-    background-color: green;
-    color: white; 
-}
-
-button.fetch {
-    border: none;
-    border-radius: 10%;
-    font-size: large;
-    font-weight: bolder;
-    background-color: #404040;
-    color: white;
-    width: 100px;
-    height: 25px;
-}
-
-button.fetch:hover {
-    background-color: white;
-    color: #404040;
 }
