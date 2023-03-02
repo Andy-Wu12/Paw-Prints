@@ -6,6 +6,7 @@ import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
 import { useEffect, useState } from 'react';
 import LightModeButton from './components/LightModeButton.tsx';
+import SPARedirectButton from './components/SPARedirectButton.tsx';
 
 // Material UI
 import CssBaseline from '@mui/material/CssBaseline';
@@ -41,14 +42,14 @@ function App() {
           The same images then load successfully immediately afterward.
           NOTE: Error seems to only be occurring on Firefox */}
           <Route path="/" element={<Home />} />
-          <Route path="/get-breed" element={<QueryBreedSection />} />
-          <Route path="/get-random" element={<RandomDogImage />} />
+            <Route path="/get-breed" element={<QueryBreedSection />} />
+            <Route path="/get-random" element={<RandomDogImage />} />
         </Routes>
 
         <div className="navbar">
-          <Button variant="contained" color="secondary" href='/'> HOME </Button>
-          <Button variant="outlined" href='/get-breed'> Search Breeds </Button>
-          <Button variant="outlined" href='/get-random'> Random Dogs </Button>
+          <SPARedirectButton text="HOME" location="/" color="secondary" variant="contained" />
+          <SPARedirectButton text="Search Breeds" location="/get-breed" color="primary" variant="outlined" />
+          <SPARedirectButton text="Random Dogs" location="/get-random" color="primary" variant="outlined" />
           <LightModeButton isLight={isLight} setIsLight={setIsLight} />
         </div>
         <br/><br/>
