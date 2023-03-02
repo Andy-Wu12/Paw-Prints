@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 
 import { ImageList, queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
+import ThrottledFetchButton from '../components/ThrottledFetchButton';
 
 // Material UI
 import InputLabel from '@mui/material/InputLabel';
@@ -23,6 +24,7 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
   const [imageCount, setImageCount] = useState(1);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const breedOptions = queryOptionsToHTML(queryOptions);
   // Config number of images to pull from API
@@ -52,12 +54,13 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
           const data = await response.json();
           if(data.status === "success") setImageLinks(data['message']);
           else setImageLinks([]);
+          setIsDisabled(true);
         }
       } catch(error) {
         setImageLinks([]);
       }
       
-    }, fetchDelay, timerObject);
+    }, fetchDelay, timerObject, () => { setIsDisabled(false) });
   }
 
   let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
@@ -92,8 +95,7 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
           </Select>
         </FormControl>
         <br/><br/>
-
-        <Button variant="contained" type="submit">Fetch</Button>
+        <ThrottledFetchButton type="submit" text="Fetch" isDisabled={isDisabled} />
       </form>
       <br/>
 

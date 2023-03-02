@@ -48,7 +48,7 @@ export function generateOptionRange(start: number, end: number) {
 	return options;
 }
 
-export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}): void {
+export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | ReturnType<typeof setTimeout>}, cleanUp: () => void): void {
   if(timeObj.id) {
     return;
   }
@@ -56,6 +56,7 @@ export function throttle(func: () => {}, msDelay: number, timeObj: {id: null | R
   func();
   timeObj.id = setTimeout(function() {
     timeObj.id = null;
+    cleanUp();
   }, msDelay);
 };
 
