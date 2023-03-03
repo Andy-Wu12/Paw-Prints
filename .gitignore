@@ -1,6 +1,12 @@
+
 # dependencies
 node_modules/
 
+# production
+*/build
+build/
+
 # misc
 .DS_Store
-build/
+app.yaml
+.gcloudignore

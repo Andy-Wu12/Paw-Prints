@@ -1,11 +1,11 @@
-import Koa from 'koa';
-import Router from '@koa/router';
-import cors from '@koa/cors';
-import fetch from 'isomorphic-fetch';
+import Koa = require('koa');
+import Router = require('@koa/router');
+import cors = require('@koa/cors');
+import fetch = require('isomorphic-fetch');
 
 const app = new Koa();
 const router = new Router();
-const port = 3011;
+const port = 8080;
 
 // Max number of images available in one query.
 const maxCount = 50;
@@ -16,16 +16,16 @@ router.get('/', (ctx) => {
 	ctx.body = {'Server\'s API Endpoints': {
 		'Getting random dog image': {
 			'route' : '/dog/get-random',
-			'example' : 'http://localhost:3011/dog/get-random'},
+			'example' : `http://localhost:${port}/dog/get-random`},
 		'Getting random images for dogs with sub-breeds': {
 			'route' : '/dog/:breed/:subBreed/get-images/:amount',
-			'example' : 'http://localhost:3011/dog/retriever/golden/get-images/50'},
+			'example' : `http://localhost:${port}/dog/retriever/golden/get-images/50`},
 		'Getting random images by breed (no sub-breeds)': {
 			'route': '/dog/:breed/get-images/:amount',
-			'example': 'http://localhost:3011/dog/germanshepherd/get-images/25'},
+			'example': `http://localhost:${port}/dog/germanshepherd/get-images/25`},
 		'Get all available breed names': {
 			'route': '/breeds',
-			'example': 'http://localhost:3011/breeds'}
+			'example': `http://localhost:${port}/breeds`}
 	}};
 });
 
