@@ -7,7 +7,6 @@ import ThrottledFetchButton from '../components/ThrottledFetchButton';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Button } from '@mui/material';
 
 let timerObject = {id: null};
 let fetchDelay = 3000;
@@ -50,7 +49,7 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
         const breed: string = e.target.breeds.value.trim().toLowerCase();
 
         if(breed !== undefined && breed.length > 0) {
-          const response = await fetch(`http://localhost:3011/dog/${breed}/get-images/${newCount}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/dog/${breed}/get-images/${newCount}`);
           const data = await response.json();
           if(data.status === "success") setImageLinks(data['message']);
           else setImageLinks([]);
@@ -108,7 +107,7 @@ export function QueryBreedSection(): ReactElement {
   return (
   <>
     <section id='QueryBreedSection'>
-      <DataFetcher url='http://localhost:3011/breeds' 
+      <DataFetcher url={`${process.env.REACT_APP_API_URL}/breeds`}
       ComponentToRender={DogQueryForm} />
     </section>
   </>

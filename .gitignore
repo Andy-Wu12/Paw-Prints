@@ -6,6 +6,9 @@ node_modules/
 */build
 build/
 
+# secrets
+.env
+
 # misc
 .DS_Store
 app.yaml
