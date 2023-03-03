@@ -1,4 +1,4 @@
-# dogs
+# View Some Dogs
 
 This is a [Node.js](https://nodejs.org/en/about/) web application
 using the [Koa](https://koajs.com/) and [React](https://reactjs.org/)
@@ -27,9 +27,15 @@ npm install
 npx ts-node server.ts
 ```
 
+Alternatively, you can run with the compiled server.ts
+```sh
+tsc -p .
+node server.js
+```
+
 If the server starts successfully, you will see
 ```sh
-Server running on http://localhost:3011
+Server running on http://localhost:8080
 ```
 
 in the terminal.
@@ -62,7 +68,7 @@ webpack compiled successfully
 ## In your browser
 Once both servers are started, you can navigate to: <br />
 1. Application website - http://localhost:3000
-2. Server w/ endpoints - http://localhost:3011
+2. Server w/ endpoints - http://localhost:8080
 
 
 ## Documentation
@@ -71,5 +77,5 @@ Once both servers are started, you can navigate to: <br />
 - @koa/router: https://github.com/koajs/router#koarouter
 - koa-body: https://github.com/dlau/koa-body#usage-with-koa-router
 - Dogs API: https://dog.ceo/dog-api/breeds-list
-- React.js: https://reactjs.org/docs/getting-started.html
+- React.js: https://beta.reactjs.org/learn/thinking-in-react
 - React Router: https://reactrouter.com/en/main
