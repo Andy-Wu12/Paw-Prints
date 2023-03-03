@@ -75,7 +75,6 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   return (
     <div className='query-form'>
       <h1>Lots of dogs! 🐕</h1>
-      {/* <TestSelect /> */}
       <form onSubmit={handleSubmit} className="breedQueryForm">
         <div>
           See 

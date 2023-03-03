@@ -110,20 +110,19 @@ export function ImageList({images, desiredLength}: ImageProps): ReactElement {
   const imageList = [];
 
   // Track chosen indices to prevent duplicate images from being picked
-  const availableIdx = [...Array(srcListLength).keys()]; 
+  // const availableIdx = [...Array(srcListLength).keys()]; 
 
   for(let i = 0; i < renderLength; i++) {
-    const randomIndex = getRandomIntInRange(availableIdx.length);
-    const imageIndex = availableIdx[randomIndex];
+    // const randomIndex = getRandomIntInRange(availableIdx.length);
+    // const imageIndex = availableIdx[randomIndex];
 
-    // Swap last element with chosen element and pop to prevent duplicate copies
-    availableIdx[randomIndex] = availableIdx[availableIdx.length - 1]
-    availableIdx.pop();
+    // // Swap last element with chosen element and pop to prevent duplicate copies
+    // availableIdx[randomIndex] = availableIdx[availableIdx.length - 1]
+    // availableIdx.pop();
 
-    const imgSrc = images[imageIndex];
+    const imgSrc = images[i];
     const img = <ClickableImage key={`image${i}`} href={imgSrc} className='list-dog-image' altText='Dog' />
     imageList.push(img);
-
   }
 
   return (
