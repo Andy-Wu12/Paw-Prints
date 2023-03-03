@@ -13,7 +13,7 @@ export function RandomDogImage(): ReactElement {
   function fetchImage() {
     throttle(async () => {
       try {
-        const response = await fetch('http://localhost:3011/dog/get-random');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/dog/get-random`);
         const data = await response.json();
         if(data.status === "success") {
           setIsDisabled(true);
