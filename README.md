@@ -22,7 +22,7 @@ frontend and backend separately.
 
 To start up the server in the backend,
 ```sh
-cd app/backend
+cd backend
 npm install
 npx ts-node server.ts
 ```
@@ -43,7 +43,7 @@ in the terminal.
 
 To start up the frontend run
 ```sh
-cd app/frontend
+cd frontend
 npm install
 npm run start
 ```
