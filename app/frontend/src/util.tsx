@@ -5,7 +5,23 @@ import { MenuItem } from '@mui/material';
 export function getRandomIntInRange(rangeEnd: number): number {
     return Math.floor(Math.random() * rangeEnd);
 }
-  
+
+export function getBreedNameFromURL(url: URL): string {
+/*
+  Example: https://images.dog.ceo/breeds/poodle-medium/WhatsApp_Image_2022-08-06_at_4.48.38_PM.jpg
+  Only part that matters is "poodle-medium" where "medium" is sub-breed
+  Link above should return "medium poodle"
+*/
+  const urlComponents = url.pathname.split('/');
+  let breedStrs = urlComponents[2].split('-');
+
+  if(breedStrs.length === 1) {
+    return breedStrs[0];
+  }
+
+  return `${breedStrs[1]} ${breedStrs[0]}`;
+}
+
 // Convert select-option data into HTML
 export function queryOptionsToHTML(data: any): JSX.Element[] {
     let options: JSX.Element[] = [];
