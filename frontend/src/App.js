@@ -1,17 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 
 import './styles/style.css';
 import './styles/layout.css';
+
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
-import { useEffect, useState } from 'react';
+import Error404 from './routes/404.tsx';
 import LightModeButton from './components/LightModeButton.tsx';
 import SPARedirectButton from './components/SPARedirectButton.tsx';
 
 // Material UI
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/" element={<Home />} />
             <Route path="/get-breed" element={<QueryBreedSection />} />
             <Route path="/get-random" element={<RandomDogImage />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
 
         <div className="navbar">
