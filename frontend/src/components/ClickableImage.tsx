@@ -1,4 +1,4 @@
-type ClickableImageProps = {
+export interface ClickableImageProps {
   href: string,
   className?: string,
   altText: string,

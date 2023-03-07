@@ -1,4 +1,5 @@
 import { ClickableImage } from "./ClickableImage";
+import LikableImage, { LikableImageProps } from "./LikableImage";
 
 type ImageListProps = {
   images: string[],
@@ -22,7 +23,21 @@ export function ImageList({images, desiredLength}: ImageListProps): React.ReactE
     // availableIdx.pop();
 
     const imgSrc = images[i];
-    const img = <ClickableImage key={`image${i}`} href={imgSrc} className='list-dog-image' altText='Dog' />
+
+    const likableImageProps: LikableImageProps = {
+      imageProps: {
+        href: imgSrc,
+        className: 'list-dog-image',
+        altText: 'Dog'
+      },
+      buttonProps: {
+        isLiked: false,
+        onClick: () => {}
+      },
+      className: 'likable-image-container'
+    }
+
+    const img = <LikableImage key={`images${i}`} {...likableImageProps} />
     imageList.push(img);
   }
 
