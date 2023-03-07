@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from 'react';
-import { ClickableImage, throttle, getBreedNameFromURL } from '../util';
+import { throttle, getBreedNameFromURL } from '../util';
+
 import ThrottledFetchButton from '../components/ThrottledFetchButton';
+import { ClickableImage } from '../components/ClickableImage';
 
 let timerObject = {id: null};
 let fetchDelay = 3000 // ms

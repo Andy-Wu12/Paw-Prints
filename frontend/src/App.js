@@ -7,6 +7,8 @@ import './styles/layout.css';
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
 import Error404 from './routes/404.tsx';
+import FavoriteImages from './routes/Favorites.tsx';
+
 import LightModeButton from './components/LightModeButton.tsx';
 import SPARedirectButton from './components/SPARedirectButton.tsx';
 
@@ -45,16 +47,19 @@ function App() {
           <Route path="/" element={<Home />} />
             <Route path="/get-breed" element={<QueryBreedSection />} />
             <Route path="/get-random" element={<RandomDogImage />} />
+            <Route path="/favorites" element={<FavoriteImages />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
 
+        <br/>
+        
         <div className="navbar">
           <SPARedirectButton text="HOME" location="/" color="secondary" variant="contained" />
           <SPARedirectButton text="Search Breeds" location="/get-breed" color="primary" variant="outlined" />
           <SPARedirectButton text="Random Dogs" location="/get-random" color="primary" variant="outlined" />
+          <SPARedirectButton text="Favorites" location="/favorites" color="primary" variant="outlined" />
           <LightModeButton isLight={isLight} setIsLight={setIsLight} />
         </div>
-        <br/><br/>
 
       </div>
     </ThemeProvider>

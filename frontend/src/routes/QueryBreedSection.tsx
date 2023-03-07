@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 
-import { ImageList, queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
+import { queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
 import ThrottledFetchButton from '../components/ThrottledFetchButton';
+import { ImageList } from '../components/ImageList';
 
 // Material UI
 import InputLabel from '@mui/material/InputLabel';
