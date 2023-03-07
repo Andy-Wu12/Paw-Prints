@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-
 import { ClickableImage, ClickableImageProps } from "./ClickableImage"
 import FavoriteButton, { FavoriteButtonProps } from "./FavoriteButton"
 
@@ -10,10 +8,6 @@ export interface LikableImageProps {
 }
 
 export default function LikableImage(props: LikableImageProps): React.ReactElement {
-
-  useEffect(() => {
-    console.log({...props.imageProps});
-  }, [])
 
   return (
     <div className={props.className}>
