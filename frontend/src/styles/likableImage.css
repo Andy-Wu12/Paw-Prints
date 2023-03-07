@@ -1,0 +1,20 @@
+:root {
+  --paddingAmount: 2%;
+}
+.likable-image-container {
+  position: relative;
+}
+
+.likable-image-container .list-dog-image {
+  width: 100%;
+  height: 100%;
+  padding: var(--paddingAmount);
+}
+
+.likable-image-container .favorite-button {
+  position: absolute;
+  top: var(--paddingAmount);
+  right: var(--paddingAmount);
+  width: 50px;
+  height: 50px;
+}

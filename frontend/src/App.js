@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import './styles/style.css';
 import './styles/layout.css';
+import './styles/likableImage.css';
 
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';

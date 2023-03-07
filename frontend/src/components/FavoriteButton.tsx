@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { ActionButtonProps } from "./generic/ActionButton";
 
 export interface FavoriteButtonProps extends ActionButtonProps {
@@ -8,9 +7,9 @@ export interface FavoriteButtonProps extends ActionButtonProps {
 export default function FavoriteButton(props: FavoriteButtonProps): React.ReactElement {
   return (
     <>
-      <Button onClick={() => { } } className="favorite-button">
+      <button onClick={() => { } } className="favorite-button">
         {props.text}
-      </Button>
+      </button>
     </>
   )
 }
