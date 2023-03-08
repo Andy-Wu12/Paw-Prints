@@ -10,7 +10,9 @@ interface ThrottledFetchButtonProps {
 
 function ThrottledFetchButton({text, isDisabled, onClick, type = undefined, variant = "contained"}: ThrottledFetchButtonProps): React.ReactElement {
   return (
-    <Button type={type} variant={variant} onClick={onClick} disabled={isDisabled ? true : false}>{text}</Button>
+    <Button type={type} variant={variant} onClick={onClick} disabled={isDisabled ? true : false}>
+      {text}
+    </Button>
   )
 }
 

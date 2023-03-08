@@ -9,7 +9,6 @@
     height: 75%;
 }
 
-.random-dog-image {
-    max-width: 75vw;
-    max-height: 75vh;
+.random-image-container .random-dog-image {
+    width: 100%;
 }

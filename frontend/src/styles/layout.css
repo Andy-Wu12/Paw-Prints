@@ -23,7 +23,7 @@ body {
 
 .dog-images {
     display: grid;
-    justify-items: center;
+    /* justify-items: center; */
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: unset;
 }
@@ -35,4 +35,9 @@ body {
 
 #breedSelector {
     width: clamp(200px, 50vw, 500px);
+}
+
+.random-image-container {
+    margin: auto;
+    width: 75%;
 }

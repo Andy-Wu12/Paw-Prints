@@ -1,6 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import { ClickableImage, throttle, getBreedNameFromURL } from '../util';
+import { throttle, getBreedNameFromURL } from '../util';
+
 import ThrottledFetchButton from '../components/ThrottledFetchButton';
+import LikableImage from '../components/LikableImage';
+
+import type { LikableImageProps } from '../components/LikableImage';
 
 let timerObject = {id: null};
 let fetchDelay = 3000 // ms
@@ -31,16 +35,25 @@ export function RandomDogImage(): ReactElement {
     }, fetchDelay, timerObject, () => { setIsDisabled(false) });
   };
 
+  const likableImageProps: LikableImageProps = {
+    imageProps: {
+      href: imageLink,
+      className: 'random-dog-image',
+      altText: 'Dog'
+    },
+    className: 'likable-image-container'
+  }
+
   return (
-    <div className='random-image-container'>
+    <>
       <h1> Random Dog Image </h1>
       <p> <ThrottledFetchButton text="Fetch" isDisabled={isDisabled} onClick={fetchImage} /> a new image </p>
       {posted &&
-        <> 
-          <ClickableImage className='random-dog-image' href={imageLink} altText='Dog' />
+        <div className='random-image-container'> 
+          <LikableImage {...likableImageProps} />
           <h2> Breed: {breedName} </h2>
-        </>
+        </div>
       }
-    </div>
+    </>
   );
 }
