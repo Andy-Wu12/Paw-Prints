@@ -31,15 +31,15 @@ function toggleLikedStatus(imageURL: string): void {
   if(!(imageURL in json)) {
     json[imageURL] = true;
   } else {
-    // Toggle value if image key does exist
-    json[imageURL] = !json[imageURL];
+    // Delete property if image key does exist
+    delete json[imageURL];
   }
   setLikedImages(json);
 }
 
 const Manager = {
   favoriteImagesKey, 
-  getLikedImages, 
+  getLikedImages,
   imageDataExists, 
   imageIsLiked, 
   toggleLikedStatus
