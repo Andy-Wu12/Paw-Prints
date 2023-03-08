@@ -11,7 +11,12 @@ export interface LikableImageProps {
 }
 
 export default function LikableImage(props: LikableImageProps): React.ReactElement {
-  const [isLiked, setIsLiked] = useState(LikeManager.imageIsLiked(props.imageProps.href));
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    const url = props.imageProps.href;
+    setIsLiked(LikeManager.getLikedImages()[url]);
+  }, [props.imageProps.href])
 
   const handleClick = () => {
     const url = props.imageProps.href;
