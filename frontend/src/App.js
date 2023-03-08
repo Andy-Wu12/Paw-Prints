@@ -9,9 +9,7 @@ import { RandomDogImage } from './routes/RandomDogImage.tsx';
 import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
 import Error404 from './routes/404.tsx';
 import FavoriteImages from './routes/Favorites.tsx';
-
-import LightModeButton from './components/LightModeButton.tsx';
-import SPARedirectButton from './components/SPARedirectButton.tsx';
+import NavMenu from './components/NavMenu.tsx';
 
 // Material UI
 import CssBaseline from '@mui/material/CssBaseline';
@@ -40,6 +38,7 @@ function App() {
     <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
       <div className="App">
         <CssBaseline />
+        <NavMenu isLight={isLight} setIsLight={setIsLight} />
         <Routes>
           {/* NS_BINDING_ABORTED error occurs for every image 
           received in first fetch after every page (re)load
@@ -54,14 +53,6 @@ function App() {
 
         <br/>
         
-        <div className="navbar">
-          <SPARedirectButton text="HOME" location="/" color="secondary" variant="contained" />
-          <SPARedirectButton text="Search Breeds" location="/get-breed" color="primary" variant="outlined" />
-          <SPARedirectButton text="Random Dogs" location="/get-random" color="primary" variant="outlined" />
-          <SPARedirectButton text="Favorites" location="/favorites" color="primary" variant="outlined" />
-          <LightModeButton isLight={isLight} setIsLight={setIsLight} />
-        </div>
-
       </div>
     </ThemeProvider>
   );
