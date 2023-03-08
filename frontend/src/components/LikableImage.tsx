@@ -27,7 +27,8 @@ export default function LikableImage(props: LikableImageProps): React.ReactEleme
   return (
     <div className={props.className}>
       <ClickableImage {...props.imageProps} />
-      <FavoriteButton isLiked={isLiked} onClick={handleClick}/>
+      <FavoriteButton isLiked={isLiked} onClick={handleClick} 
+        className={isLiked ? "favorite-button-filled" : "favorite-button-unfilled"}/>
     </div>
   )
 }
