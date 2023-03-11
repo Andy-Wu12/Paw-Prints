@@ -15,13 +15,14 @@ export default function LikableImage(props: LikableImageProps): React.ReactEleme
 
   useEffect(() => {
     const url = props.imageProps.href;
-    setIsLiked(LikeManager.getLikedImages()[url]);
+    
+    setIsLiked(LikeManager.imageIsLiked(url));
   }, [props.imageProps.href])
 
   const handleClick = () => {
     const url = props.imageProps.href;
     LikeManager.toggleLikedStatus(url);
-    setIsLiked(LikeManager.getLikedImages()[url])
+    setIsLiked(LikeManager.imageIsLiked(url))
   }
 
   return (
