@@ -1,20 +1,34 @@
 import { useState, useEffect } from "react"
 
-import { ImageList } from "../components/ImageList"
+import SectionedImageList from "../components/SectionedImageList";
 import LikeManager from "../likeManager"
 
+type tImagesByBreed = {
+  [breedName: string]: {
+    [imageUrls: string]: boolean
+  }
+}
+
 export default function FavoriteImages() {
-  const [links, setLinks] = useState<string[]>([]);
+  const [imagesByBreed, setImagesByBreed] = useState<tImagesByBreed>({});
 
   useEffect(() => {
-    setLinks(Object.keys(LikeManager.getLikedImages()));
+    setImagesByBreed(LikeManager.getLikedImages());
 
   }, []);
 
   return (
     <>
       <h1> Favorites </h1> <br/>
-      <ImageList images={links} desiredLength={links.length}/>
+      {Object.keys(imagesByBreed).map((breedName) => {
+        return (
+          <SectionedImageList key={breedName}
+            sectionName={breedName} 
+            imageURLs={Object.keys(imagesByBreed[breedName])} />
+          )
+        })
+      }
     </>
   )
 }
+

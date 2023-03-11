@@ -63,6 +63,11 @@ function toggleLikedStatus(imageURL: string): void {
   } else {
     // Delete property if image key does exist
     delete breedData[imageURL];
+
+    // Delete breed key if no more images exist
+    if(Object.keys(imageJson[breedName]).length === 0) {
+      delete imageJson[breedName];
+    }
   }
   setLikedImages(imageJson);
 }
