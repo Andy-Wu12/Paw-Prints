@@ -1,5 +1,4 @@
 import LikableImage, { LikableImageProps } from "./LikableImage";
-import LikeManager from "../likeManager";
 
 type ImageListProps = {
   images: string[],
