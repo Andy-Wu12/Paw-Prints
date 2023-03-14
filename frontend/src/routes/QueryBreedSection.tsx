@@ -20,7 +20,7 @@ interface DogFormProps {
     }
 }
 
-function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
+export function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   const [posted, setPosted] = useState(false);
   const [imageLinks, setImageLinks] = useState([]);
   const [imageCount, setImageCount] = useState(1);
@@ -78,21 +78,26 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
       <h1>Lots of dogs! 🐕</h1>
       <form onSubmit={handleSubmit} className="breedQueryForm">
         <div>
-          See 
-          <Select name='imageCount' id='imageCount' defaultValue={minImageCount.toString()}>
-            {imageCountOptions}
-          </Select>
+          See
+          <FormControl>
+            <InputLabel id="imageCount-select-label"> # images </InputLabel>
+            <Select data-testid="imageCount"
+            name="imageCount" labelId="imageCount-select-label" id="imageCount" defaultValue={minImageCount.toString()}>
+              {imageCountOptions}
+            </Select>
+          </FormControl>
           random photos of your favorite dogs
         </div>
         <br/>
-        
+
         <FormControl>
           <InputLabel id="breeds-select-label">Breed</InputLabel>
-          <Select name="breeds" labelId="breeds-select-label" id="breedSelector" 
-          label="Breed" defaultValue={''}>
+          <Select data-testid="breedName"
+          name="breeds" labelId="breeds-select-label" id="breedSelector" label="Breed" defaultValue={''}>
             {breedOptions}
           </Select>
         </FormControl>
+
         <br/><br/>
         <ThrottledFetchButton type="submit" text="Fetch" isDisabled={isDisabled} />
       </form>
@@ -103,7 +108,7 @@ function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
   );
 }
 
-export function QueryBreedSection(): ReactElement {
+export default function QueryBreedSection(): ReactElement {
   return (
   <>
     <section id='QueryBreedSection'>
