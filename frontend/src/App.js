@@ -6,7 +6,7 @@ import './styles/layout.css';
 import './styles/likableImage.css';
 
 import { RandomDogImage } from './routes/RandomDogImage.tsx';
-import { QueryBreedSection } from './routes/QueryBreedSection.tsx';
+import QueryBreedSection from './routes/QueryBreedSection.tsx';
 import Error404 from './routes/404.tsx';
 import Home from './routes/Home';
 import FavoriteImages from './routes/Favorites.tsx';
