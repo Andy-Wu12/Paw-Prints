@@ -24,7 +24,6 @@ test("should show a select field for number of images to fetch", async () => {
 })
 
 
-///// TODO: Need to be able to mock the Dog API instead of depending on it for these tests
 test("should allow user to change number of images", async () => {
   const valToTest = 45;
   render(<DogQueryForm queryOptions={mockQueryOptions} />)
