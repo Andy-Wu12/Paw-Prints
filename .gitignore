@@ -9,6 +9,9 @@ build/
 # secrets
 .env
 
+# testing
+coverage/
+
 # misc
 .DS_Store
 app.yaml

@@ -37,7 +37,6 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
                 const breedStr = `${subBreed} ${breed}`;
                 const breedValue = `${breed}/${subBreed}`;
                 const optionHTML = <MenuItem key={`${breed}option${i}`} value={breedValue}> {breedStr} </MenuItem>;
-                // console.log(optionHTML);
                 options.push(optionHTML);
             }
         }
