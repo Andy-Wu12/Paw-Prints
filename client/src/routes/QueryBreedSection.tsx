@@ -1,6 +1,8 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 
-import { queryOptionsToHTML, generateOptionRange, DataFetcher, throttle } from '../util';
+import type { ReactElement, SetStateAction } from 'react';
+
+import { queryOptionsToHTML, generateOptionRange, throttle } from '../util';
 import ThrottledFetchButton from '../components/ThrottledFetchButton';
 import { ImageList } from '../components/ImageList';
 
@@ -8,81 +10,60 @@ import { ImageList } from '../components/ImageList';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import useDogQuery from '../hooks/useDogQuery';
 
 let timerObject = {id: null};
 let fetchDelay = 3000;
 
 interface DogFormProps {
-  queryOptions: 
-    {
-      message: Object,
-      status: string
-    }
+  breeds: any,
+  minImages: number,
+  maxImages: number,
+  getDogs: (e: React.SyntheticEvent) => Promise<string[]>
+  setImageLinks: React.Dispatch<SetStateAction<string[]>>,
+  setHasFetched: React.Dispatch<SetStateAction<boolean>>
 }
 
-export function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
-  const [posted, setPosted] = useState(false);
-  const [imageLinks, setImageLinks] = useState([]);
-  const [imageCount, setImageCount] = useState(1);
-  const [isDisabled, setIsDisabled] = useState(false);
+export function DogQueryForm(props: DogFormProps): ReactElement {
+  const [isDisabled, setDisabled] = useState(false);
 
-  const breedOptions = queryOptionsToHTML(queryOptions);
+  const {
+    breeds,
+    minImages,
+    maxImages,
+    getDogs,
+    setImageLinks,
+    setHasFetched
+  } = props;
+
+  const breedOptions = queryOptionsToHTML(breeds);
   // Config number of images to pull from API
-  const maxImageCount = 50;
-  const minImageCount = 1;
-  const imageCountOptions = generateOptionRange(minImageCount, maxImageCount);
+  const imageCountOptions = generateOptionRange(minImages, maxImages);
 
-  function handleSubmit(e: any) {
+  function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     throttle(async () => {
       try {
-        setPosted(true);
-        let newCount: number = parseInt(e.target.imageCount.value);
-        // In case user decides to edit options in inspector
-        if(isNaN(newCount) || newCount < 0) {
-          newCount = 1;
-        }
-        if(newCount > maxImageCount) {
-          newCount = 50;
-        }
-        setImageCount(newCount);
-        
-        const breed: string = e.target.breeds.value.trim().toLowerCase();
-
-        if(breed !== undefined && breed.length > 0) {
-          const response = await fetch(`${process.env.REACT_APP_API_URL}/dog/${breed}/get-images/${newCount}`);
-          const data = await response.json();
-          if(data.status === "success") setImageLinks(data['message']);
-          else setImageLinks([]);
-          setIsDisabled(true);
-        }
+          setHasFetched(true);
+          const imageLinks = await getDogs(e);
+          setDisabled(true);
+          setImageLinks(imageLinks);
       } catch(error) {
         setImageLinks([]);
       }
       
-    }, fetchDelay, timerObject, () => { setIsDisabled(false) });
-  }
-
-  let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
-  if(posted) {
-    if(imageLinks.length > 0) {
-      imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageCount} />;
-    }
-    else {
-      imageSectionHTML = <p> Invalid breed name! </p>;
-    }
+    }, fetchDelay, timerObject, () => { setDisabled(false) });
   }
 
   return (
     <div className='query-form'>
-      <h1>Lots of dogs! 🐕</h1>
       <form onSubmit={handleSubmit} className="breedQueryForm">
         <div>
           See
           <FormControl>
             <InputLabel id="imageCount-select-label"> # images </InputLabel>
             <Select data-testid="imageCount"
-            name="imageCount" labelId="imageCount-select-label" id="imageCount" defaultValue={minImageCount.toString()}>
+            name="imageCount" labelId="imageCount-select-label" id="imageCount" defaultValue={minImages.toString()}>
               {imageCountOptions}
             </Select>
           </FormControl>
@@ -103,18 +84,47 @@ export function DogQueryForm({queryOptions}: DogFormProps): ReactElement {
       </form>
       <br/>
 
-      {imageSectionHTML}
     </div>
   );
 }
 
 export default function QueryBreedSection(): ReactElement {
+  const [hasFetched, setHasFetched] = useState<boolean>(false);
+  const [imageLinks, setImageLinks] = useState<string[]>([]);
+
+  const { 
+    breeds, 
+    getDogs,
+    minImages, 
+    maxImages 
+  } = useDogQuery();
+
+  let imageSectionHTML = <p> Select a name and click 'Fetch' to get started! </p>;
+
+  if(hasFetched) {
+    if(imageLinks.length > 0) {
+      imageSectionHTML = <ImageList images={imageLinks} desiredLength={imageLinks.length} />;
+    }
+    else {
+      imageSectionHTML = <p> Invalid breed name! </p>;
+    }
+  }
+
+  const formProps: DogFormProps = {
+      breeds: breeds,
+      minImages: minImages,
+      maxImages: maxImages,
+      getDogs: getDogs,
+      setImageLinks: setImageLinks,
+      setHasFetched: setHasFetched
+  }
+
   return (
-  <>
     <section id='QueryBreedSection'>
-      <DataFetcher url={`${process.env.REACT_APP_API_URL}/breeds`}
-      ComponentToRender={DogQueryForm} />
+      <h1>Lots of dogs! 🐕</h1>
+      <DogQueryForm {...formProps} />
+
+      {imageSectionHTML}
     </section>
-  </>
   );
 }
