@@ -6,31 +6,28 @@ import LikableImage from '../components/LikableImage';
 
 import type { LikableImageProps } from '../components/LikableImage';
 
+import useRandomDog from '../hooks/useRandomDog';
+
 let timerObject = {id: null};
-let fetchDelay = 3000 // ms
+const fetchDelay = 3000 // ms
 
 export function RandomDogImage(): ReactElement {
-  const [posted, setPosted] = useState(false);
-  const [imageLink, setImageLink] = useState('');
-  const [breedName, setBreedName] = useState('');
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [imageLink, setImageLink] = useState<string>('');
+  const [breedName, setBreedName] = useState<string>('');
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   
+  const { getDog } = useRandomDog();
+
   function fetchImage() {
     throttle(async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/dog/get-random`);
-        const data = await response.json();
-        if(data.status === "success") {
-          setIsDisabled(true);
-          setImageLink(data['message']);
-          setBreedName(getBreedNameFromURL(new URL(data['message'])))
-          setPosted(true);
-        }
-
+        const link = await getDog();
+        setIsDisabled(true);
+        setImageLink(link);
+        setBreedName(getBreedNameFromURL(new URL(link)));
       } catch(error) {
         setImageLink('');
         setBreedName('');
-        setPosted(false);
       }
     }, fetchDelay, timerObject, () => { setIsDisabled(false) });
   };
@@ -48,7 +45,7 @@ export function RandomDogImage(): ReactElement {
     <>
       <h1> Random Dog Image </h1>
       <p> <ThrottledFetchButton text="Fetch" isDisabled={isDisabled} onClick={fetchImage} /> a new image </p>
-      {posted &&
+      {imageLink.trim() !== '' &&
         <div className='random-image-container'> 
           <LikableImage {...likableImageProps} />
           <h2> Breed: {breedName} </h2>

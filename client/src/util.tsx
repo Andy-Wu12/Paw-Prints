@@ -27,7 +27,7 @@ export function queryOptionsToHTML(data: any): JSX.Element[] {
     let options: JSX.Element[] = [];
 
     // ES6 - valid syntax
-    for(const [key, value] of Object.entries(data.message)) {
+    for(const [key, value] of Object.entries(data)) {
         const breed = key;
         const subBreeds: any = value;
         
