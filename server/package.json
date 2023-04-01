@@ -5,9 +5,7 @@
 	"dependencies": {
 		"@koa/cors": "^3.4.1",
 		"@koa/router": "^12.0.0",
-		"@types/koa": "^2.13.5",
-		"@types/koa-router": "^7.4.4",
-		"@types/node": "^18.11.9",
+		"dotenv": "^16.0.3",
 		"isomorphic-fetch": "^3.0.0",
 		"koa": "^2.13.4",
 		"koa-body": "^5.0.0",
@@ -15,13 +13,18 @@
 	},
 	"devDependencies": {
 		"@types/isomorphic-fetch": "^0.0.36",
+		"@types/koa": "^2.13.6",
 		"@types/koa__cors": "^3.3.0",
-		"@types/koa__router": "^12.0.0"
+		"@types/koa__router": "^12.0.0",
+		"@types/node": "^18.15.11",
+		"nodemon": "^2.0.22"
 	},
 	"scripts": {
-		"start": "node server.js",
-		"gcp-build": "tsc server.ts",
-		"deploy": "gcloud app deploy"
-
+		"start": "node build/server.js",
+		"build": "tsc -p .",
+		"watch": "nodemon build/server.js",
+		"deploy": "npm run build && npm run start",
+		"deploy-watch": "npm run build && npm run watch",
+		"gcloud-deploy": "gcloud app deploy"
 	}
 }
