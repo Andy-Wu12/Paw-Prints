@@ -27,11 +27,11 @@ npm install
 npx ts-node server.ts
 ```
 
-Alternatively, you can run with the compiled server.ts
+Alternatively, you can run with the compiled server code
 ```sh
-tsc -p .
-node server.js
+npm run deploy
 ```
+Check the package.json for more possible commands
 
 If the server starts successfully, you will see
 ```sh
